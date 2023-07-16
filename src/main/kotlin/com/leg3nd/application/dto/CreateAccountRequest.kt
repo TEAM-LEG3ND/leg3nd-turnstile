@@ -1,7 +1,9 @@
 package com.leg3nd.application.dto
 
 import com.leg3nd.domain.core.model.Account
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class CreateAccountRequest(
     var email: String,
     var nickname: String,
