@@ -3,11 +3,13 @@ package com.leg3nd.infrastructure.database.mongo.document
 import com.leg3nd.domain.core.model.Account
 import org.bson.codecs.pojo.annotations.BsonId
 import org.litote.kmongo.Id
+import org.litote.kmongo.newId
+import org.litote.kmongo.toId
 import java.time.LocalDateTime
 
 data class AccountDocument(
     @BsonId
-    val id: Id<AccountDocument>?,
+    val id: Id<AccountDocument> = newId(),
     var email: String,
     var nickname: String,
     var fullName: String,
