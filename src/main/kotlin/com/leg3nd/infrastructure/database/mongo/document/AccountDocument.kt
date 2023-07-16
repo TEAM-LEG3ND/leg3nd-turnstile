@@ -22,6 +22,13 @@ data class AccountDocument(
         GOOGLE, GITHUB
         ;
 
+        companion object {
+            fun fromDomain(oAuthProvider: Account.OAuthProvider): OAuthProvider = when (oAuthProvider) {
+                Account.OAuthProvider.GOOGLE -> GOOGLE
+                Account.OAuthProvider.GITHUB -> GITHUB
+            }
+        }
+
         fun toDomain(): Account.OAuthProvider = when (this) {
             GOOGLE -> Account.OAuthProvider.GOOGLE
             GITHUB -> Account.OAuthProvider.GITHUB
@@ -32,12 +39,35 @@ data class AccountDocument(
         DRAFT, OK, SUSPENDED, WITHDRAW
         ;
 
+        companion object {
+            fun fromDomain(status: Account.Status): Status = when (status) {
+                Account.Status.DRAFT -> DRAFT
+                Account.Status.OK -> OK
+                Account.Status.SUSPENDED -> SUSPENDED
+                Account.Status.WITHDRAW -> WITHDRAW
+            }
+        }
+
         fun toDomain(): Account.Status = when (this) {
             DRAFT -> Account.Status.DRAFT
             OK -> Account.Status.OK
             SUSPENDED -> Account.Status.SUSPENDED
             WITHDRAW -> Account.Status.WITHDRAW
         }
+    }
+
+    companion object {
+        fun fromDomain(account: Account): AccountDocument =
+            AccountDocument(
+                id = account.id?.toId() ?: newId(),
+                email = account.email,
+                nickname = account.nickname,
+                fullName = account.fullName,
+                oAuthProvider = OAuthProvider.fromDomain(account.oAuthProvider),
+                status = Status.fromDomain(account.status),
+                createdAt = account.createdAt,
+                updatedAt = account.updatedAt,
+            )
     }
 
     fun toDomain(): Account =
