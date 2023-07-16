@@ -1,7 +1,7 @@
 package com.leg3nd.infrastructure.database.mongo
 
 import com.leg3nd.infrastructure.database.mongo.document.AccountDocument
-import kotlinx.coroutines.reactive.awaitSingle
+import kotlinx.coroutines.reactive.awaitFirstOrNull
 import org.koin.core.annotation.Single
 import org.litote.kmongo.reactivestreams.KMongo
 import org.litote.kmongo.reactivestreams.getCollection
@@ -13,7 +13,9 @@ class MongoAccountRepository {
     private val accountCollection = database.getCollection<AccountDocument>()
 
     suspend fun create(accountDocument: AccountDocument): String {
-        val createdAccountDocument = accountCollection.insertOne(accountDocument).awaitSingle()
-        return createdAccountDocument.insertedId?.toString() ?: throw Exception("Insert Failed")
+        accountCollection.insertOne(accountDocument).awaitFirstOrNull()
+            ?: throw Exception("account insert Failed")
+
+        return accountDocument.id.toString()
     }
 }
