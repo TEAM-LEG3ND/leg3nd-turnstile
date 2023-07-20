@@ -4,16 +4,16 @@ import com.leg3nd.domain.core.model.Account
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.toJavaLocalDateTime
 import kotlinx.datetime.toKotlinLocalDateTime
+import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
-import org.bson.codecs.pojo.annotations.BsonId
 import org.litote.kmongo.Id
 import org.litote.kmongo.newId
 import org.litote.kmongo.toId
 
 @Serializable
 data class AccountDocument(
-    @BsonId
-    val id: Id<AccountDocument> = newId(),
+    @Contextual
+    val _id: Id<AccountDocument> = newId(),
     var email: String,
     var nickname: String,
     var fullName: String,
@@ -146,7 +146,7 @@ data class AccountDocument(
     companion object {
         fun fromDomain(account: Account): AccountDocument =
             AccountDocument(
-                id = account.id?.toId() ?: newId(),
+                _id = account.id?.toId() ?: newId(),
                 email = account.email,
                 nickname = account.nickname,
                 fullName = account.fullName,
@@ -160,7 +160,7 @@ data class AccountDocument(
 
     fun toDomain(): Account =
         Account(
-            id = this.id.toString(),
+            id = this._id.toString(),
             email = this.email,
             nickname = this.nickname,
             fullName = this.fullName,
