@@ -5,4 +5,8 @@ import com.leg3nd.domain.core.model.Account
 interface AccountDatabasePort {
 
     suspend fun create(newAccount: Account): String
+
+    suspend fun findById(id: String): Result<Account>
+
+    suspend fun updateServicesById(id: String, services: List<Account.Service>): Result<Unit>
 }
