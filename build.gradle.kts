@@ -40,6 +40,7 @@ dependencies {
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
 
     implementation("org.litote.kmongo:kmongo-coroutine-serialization:$kmongo_version")
+    implementation("org.litote.kmongo:kmongo-id-serialization:$kmongo_version")
 
     implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
 
