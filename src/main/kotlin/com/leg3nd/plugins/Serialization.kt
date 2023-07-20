@@ -8,6 +8,7 @@ import io.ktor.server.routing.*
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonNamingStrategy
+import org.litote.kmongo.id.serialization.IdKotlinXSerializationModule
 
 @OptIn(ExperimentalSerializationApi::class)
 fun Application.configureSerialization() {
@@ -15,6 +16,7 @@ fun Application.configureSerialization() {
         json(
             Json {
                 namingStrategy = JsonNamingStrategy.SnakeCase
+                serializersModule = IdKotlinXSerializationModule
             },
         )
     }
