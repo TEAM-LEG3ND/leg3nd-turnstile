@@ -1,12 +1,16 @@
 package com.leg3nd.infrastructure.database.mongo.document
 
 import com.leg3nd.domain.core.model.Account
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.toJavaLocalDateTime
+import kotlinx.datetime.toKotlinLocalDateTime
+import kotlinx.serialization.Serializable
 import org.bson.codecs.pojo.annotations.BsonId
 import org.litote.kmongo.Id
 import org.litote.kmongo.newId
 import org.litote.kmongo.toId
-import java.time.LocalDateTime
 
+@Serializable
 data class AccountDocument(
     @BsonId
     val id: Id<AccountDocument> = newId(),
@@ -15,9 +19,92 @@ data class AccountDocument(
     var fullName: String,
     var oAuthProvider: OAuthProvider,
     var status: Status,
+    var services: List<Service>,
     val createdAt: LocalDateTime,
     var updatedAt: LocalDateTime,
 ) {
+    @Serializable
+    sealed class Service(
+        val type: ServiceType,
+    ) {
+        companion object {
+            fun fromDomain(serviceDomain: Account.Service): Service = when (serviceDomain) {
+                is Account.Service.Studium -> Studium.fromDomain(serviceDomain)
+                is Account.Service.BreadN -> BreadN.fromDomain(serviceDomain)
+            }
+        }
+
+        fun toDomain(): Account.Service = when (this) {
+            is Studium -> this.toStudiumDomain()
+            is BreadN -> this.toBreadNDomain()
+        }
+
+        enum class ServiceType {
+            STUDIUM, BREAD_N
+        }
+
+        @Serializable
+        data class Studium(
+            val nickname: String,
+            val profileImageUrl: String,
+            var status: Status,
+            val intro: String,
+            val createdAt: LocalDateTime,
+            var updatedAt: LocalDateTime,
+        ) : Service(ServiceType.STUDIUM) {
+            companion object {
+                fun fromDomain(studiumDomain: Account.Service.Studium): Studium =
+                    Studium(
+                        nickname = studiumDomain.nickname,
+                        profileImageUrl = studiumDomain.profileImageUrl,
+                        status = Status.fromDomain(studiumDomain.status),
+                        intro = studiumDomain.intro,
+                        createdAt = studiumDomain.createdAt.toKotlinLocalDateTime(),
+                        updatedAt = studiumDomain.updatedAt.toKotlinLocalDateTime(),
+                    )
+            }
+
+            fun toStudiumDomain(): Account.Service.Studium =
+                Account.Service.Studium(
+                    nickname = this.nickname,
+                    profileImageUrl = this.profileImageUrl,
+                    status = this.status.toDomain(),
+                    intro = this.intro,
+                    createdAt = this.createdAt.toJavaLocalDateTime(),
+                    updatedAt = this.updatedAt.toJavaLocalDateTime(),
+                )
+        }
+
+        @Serializable
+        data class BreadN(
+            val nickname: String,
+            val profileImageUrl: String,
+            var status: Status,
+            val createdAt: LocalDateTime,
+            var updatedAt: LocalDateTime,
+        ) : Service(ServiceType.BREAD_N) {
+            companion object {
+                fun fromDomain(breadNDomain: Account.Service.BreadN): BreadN =
+                    BreadN(
+                        nickname = breadNDomain.nickname,
+                        profileImageUrl = breadNDomain.profileImageUrl,
+                        status = Status.fromDomain(breadNDomain.status),
+                        createdAt = breadNDomain.createdAt.toKotlinLocalDateTime(),
+                        updatedAt = breadNDomain.updatedAt.toKotlinLocalDateTime(),
+                    )
+            }
+
+            fun toBreadNDomain(): Account.Service.BreadN =
+                Account.Service.BreadN(
+                    nickname = this.nickname,
+                    profileImageUrl = this.profileImageUrl,
+                    status = this.status.toDomain(),
+                    createdAt = this.createdAt.toJavaLocalDateTime(),
+                    updatedAt = this.updatedAt.toJavaLocalDateTime(),
+                )
+        }
+    }
+
     enum class OAuthProvider {
         GOOGLE, GITHUB
         ;
@@ -65,8 +152,9 @@ data class AccountDocument(
                 fullName = account.fullName,
                 oAuthProvider = OAuthProvider.fromDomain(account.oAuthProvider),
                 status = Status.fromDomain(account.status),
-                createdAt = account.createdAt,
-                updatedAt = account.updatedAt,
+                services = account.services.map { Service.fromDomain(it) },
+                createdAt = account.createdAt.toKotlinLocalDateTime(),
+                updatedAt = account.updatedAt.toKotlinLocalDateTime(),
             )
     }
 
@@ -78,7 +166,8 @@ data class AccountDocument(
             fullName = this.fullName,
             oAuthProvider = this.oAuthProvider.toDomain(),
             status = this.status.toDomain(),
-            createdAt = this.createdAt,
-            updatedAt = this.updatedAt,
+            services = this.services.map { it.toDomain() },
+            createdAt = this.createdAt.toJavaLocalDateTime(),
+            updatedAt = this.updatedAt.toJavaLocalDateTime(),
         )
 }
