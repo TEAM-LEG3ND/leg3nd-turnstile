@@ -3,7 +3,6 @@ package com.leg3nd.plugins
 import io.ktor.server.application.*
 import org.koin.core.annotation.ComponentScan
 import org.koin.core.annotation.Module
-import org.koin.dsl.module
 import org.koin.fileProperties
 import org.koin.ksp.generated.module
 import org.koin.ktor.plugin.Koin
