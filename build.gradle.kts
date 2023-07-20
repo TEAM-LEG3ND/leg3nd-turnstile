@@ -10,7 +10,7 @@ plugins {
     kotlin("jvm") version "1.9.0"
     id("io.ktor.plugin") version "2.3.2"
     id("org.jetbrains.kotlin.plugin.serialization") version "1.9.0"
-    id("org.jlleitschuh.gradle.ktlint") version "11.5.0"
+    id("org.jmailen.kotlinter") version "3.15.0"
     id("com.google.devtools.ksp") version "1.9.0-1.0.11"
 }
 
@@ -39,7 +39,9 @@ dependencies {
     testImplementation("io.ktor:ktor-server-tests-jvm:$ktor_version")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
 
-    implementation("org.litote.kmongo:kmongo-coroutine:$kmongo_version")
+    implementation("org.litote.kmongo:kmongo-coroutine-serialization:$kmongo_version")
+
+    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
 
     implementation("io.insert-koin:koin-core:$koin_version")
     implementation("io.insert-koin:koin-ktor:$koin_ktor_version")
@@ -51,4 +53,27 @@ dependencies {
 // KSP - To use generated sources
 sourceSets.main {
     java.srcDirs("build/generated/ksp/main/kotlin")
+}
+
+tasks.lintKotlinMain {
+    dependsOn("kspKotlin") // without this, it will fail to build with Gradle 8
+// I have to convert the type `FileCollection` to `FileTree` here.
+    source = (source - fileTree("$buildDir/generated")).asFileTree
+}
+
+tasks.formatKotlinMain {
+    dependsOn("kspKotlin") // without this, it will fail to build with Gradle 8
+// I have to convert the type `FileCollection` to `FileTree` here.
+    source = (source - fileTree("$buildDir/generated")).asFileTree
+}
+
+tasks.whenTaskAdded {
+//    println("adding task: $name")
+    if (name == "lintKotlinGeneratedByKspKotlin" ||
+        name == "lintKotlinGeneratedByKspTestKotlin" ||
+        name == "formatKotlinGeneratedByKspKotlin" ||
+        name == "formatKotlinGeneratedByKspTestKotlin"
+    ) {
+        enabled = false
+    }
 }
