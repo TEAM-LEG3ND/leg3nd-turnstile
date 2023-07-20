@@ -1,4 +1,4 @@
-package com.leg3nd.infrastructure.database
+package com.leg3nd.infrastructure.database.mongo
 
 import com.leg3nd.domain.core.model.Account
 import com.leg3nd.domain.ports.database.AccountDatabasePort
