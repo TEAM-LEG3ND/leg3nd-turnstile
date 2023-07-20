@@ -17,6 +17,7 @@ data class CreateAccountRequest(
             nickname = this.nickname,
             fullName = this.fullName,
             oAuthProvider = oAuthProvider,
+            services = emptyList(),
         )
     }
 }
