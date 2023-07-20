@@ -8,7 +8,7 @@ data class Account(
     var nickname: String,
     var fullName: String,
     var oAuthProvider: OAuthProvider,
-    var status: Status = Status.DRAFT,
+    var status: Status = Status.OK,
     var services: List<Service>,
     val createdAt: LocalDateTime = LocalDateTime.now(),
     var updatedAt: LocalDateTime = LocalDateTime.now(),
