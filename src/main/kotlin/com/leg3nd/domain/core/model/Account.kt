@@ -13,20 +13,12 @@ data class Account(
     val createdAt: LocalDateTime = LocalDateTime.now(),
     var updatedAt: LocalDateTime = LocalDateTime.now(),
 ) {
-    sealed class Service(
+    data class Service(
         val type: ServiceType,
+        var status: Status,
+        val createdAt: LocalDateTime = LocalDateTime.now(),
+        var updatedAt: LocalDateTime = LocalDateTime.now(),
     ) {
-        data class Studium(
-            var status: Status,
-            val createdAt: LocalDateTime = LocalDateTime.now(),
-            var updatedAt: LocalDateTime = LocalDateTime.now(),
-        ) : Service(ServiceType.STUDIUM)
-
-        data class BreadN(
-            var status: Status,
-            val createdAt: LocalDateTime = LocalDateTime.now(),
-            var updatedAt: LocalDateTime = LocalDateTime.now(),
-        ) : Service(ServiceType.BREAD_N)
 
         enum class ServiceType {
             STUDIUM, BREAD_N

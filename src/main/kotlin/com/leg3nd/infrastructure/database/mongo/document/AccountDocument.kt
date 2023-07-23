@@ -24,69 +24,45 @@ data class AccountDocument(
     var updatedAt: LocalDateTime,
 ) {
     @Serializable
-    sealed class Service(
+    data class Service(
         val type: ServiceType,
+        var status: Status,
+        val createdAt: LocalDateTime,
+        var updatedAt: LocalDateTime,
     ) {
         companion object {
-            fun fromDomain(serviceDomain: Account.Service): Service = when (serviceDomain) {
-                is Account.Service.Studium -> Studium.fromDomain(serviceDomain)
-                is Account.Service.BreadN -> BreadN.fromDomain(serviceDomain)
-            }
+            fun fromDomain(serviceDomain: Account.Service): Service =
+                Service(
+                    type = ServiceType.fromDomain(serviceDomain.type),
+                    status = Status.fromDomain(serviceDomain.status),
+                    createdAt = serviceDomain.createdAt.toKotlinLocalDateTime(),
+                    updatedAt = serviceDomain.updatedAt.toKotlinLocalDateTime(),
+                )
         }
 
-        fun toDomain(): Account.Service = when (this) {
-            is Studium -> this.toStudiumDomain()
-            is BreadN -> this.toBreadNDomain()
-        }
+        fun toDomain(): Account.Service =
+            Account.Service(
+                type = this.type.toDomain(),
+                status = this.status.toDomain(),
+                createdAt = this.createdAt.toJavaLocalDateTime(),
+                updatedAt = this.updatedAt.toJavaLocalDateTime(),
+            )
 
         enum class ServiceType {
             STUDIUM, BREAD_N
-        }
+            ;
 
-        @Serializable
-        data class Studium(
-            var status: Status,
-            val createdAt: LocalDateTime,
-            var updatedAt: LocalDateTime,
-        ) : Service(ServiceType.STUDIUM) {
             companion object {
-                fun fromDomain(studiumDomain: Account.Service.Studium): Studium =
-                    Studium(
-                        status = Status.fromDomain(studiumDomain.status),
-                        createdAt = studiumDomain.createdAt.toKotlinLocalDateTime(),
-                        updatedAt = studiumDomain.updatedAt.toKotlinLocalDateTime(),
-                    )
+                fun fromDomain(serviceTypeDomain: Account.Service.ServiceType): ServiceType = when (serviceTypeDomain) {
+                    Account.Service.ServiceType.STUDIUM -> STUDIUM
+                    Account.Service.ServiceType.BREAD_N -> BREAD_N
+                }
             }
 
-            fun toStudiumDomain(): Account.Service.Studium =
-                Account.Service.Studium(
-                    status = this.status.toDomain(),
-                    createdAt = this.createdAt.toJavaLocalDateTime(),
-                    updatedAt = this.updatedAt.toJavaLocalDateTime(),
-                )
-        }
-
-        @Serializable
-        data class BreadN(
-            var status: Status,
-            val createdAt: LocalDateTime,
-            var updatedAt: LocalDateTime,
-        ) : Service(ServiceType.BREAD_N) {
-            companion object {
-                fun fromDomain(breadNDomain: Account.Service.BreadN): BreadN =
-                    BreadN(
-                        status = Status.fromDomain(breadNDomain.status),
-                        createdAt = breadNDomain.createdAt.toKotlinLocalDateTime(),
-                        updatedAt = breadNDomain.updatedAt.toKotlinLocalDateTime(),
-                    )
+            fun toDomain(): Account.Service.ServiceType = when (this) {
+                STUDIUM -> Account.Service.ServiceType.STUDIUM
+                BREAD_N -> Account.Service.ServiceType.BREAD_N
             }
-
-            fun toBreadNDomain(): Account.Service.BreadN =
-                Account.Service.BreadN(
-                    status = this.status.toDomain(),
-                    createdAt = this.createdAt.toJavaLocalDateTime(),
-                    updatedAt = this.updatedAt.toJavaLocalDateTime(),
-                )
         }
     }
 
