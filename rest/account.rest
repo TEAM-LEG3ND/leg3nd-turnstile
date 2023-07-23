@@ -8,3 +8,10 @@ Content-Type: application/json
 }
 
 ###
+POST http://localhost:8080/account/service
+Content-Type: application/json
+
+{
+  "account_id": "someId",
+  "service_type": "STUDIUM"
+}
