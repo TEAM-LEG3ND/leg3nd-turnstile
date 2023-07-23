@@ -3,7 +3,6 @@ package com.leg3nd.domain.core.service
 import com.leg3nd.domain.core.model.Account
 import com.leg3nd.domain.ports.api.AccountServicePort
 import com.leg3nd.domain.ports.database.AccountDatabasePort
-import io.ktor.server.plugins.*
 import org.koin.core.annotation.Single
 import org.slf4j.LoggerFactory
 import java.time.LocalDateTime
@@ -23,7 +22,13 @@ class AccountService(
     override suspend fun addService(accountId: String, serviceType: Account.Service.ServiceType) {
         val account = accountDatabasePort.findById(accountId).getOrElse {
             log.error("error occurred when findById", it)
-            throw BadRequestException("No such user with account id")
+            throw Exception("No such user with account id")
+        }
+
+        if (account.services.map { it.type }.contains(serviceType)) {
+            val msg = "Service already exist"
+            log.error(msg)
+            throw Exception(msg)
         }
 
         val service = Account.Service(
