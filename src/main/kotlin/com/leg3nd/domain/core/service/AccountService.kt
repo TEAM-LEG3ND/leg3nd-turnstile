@@ -36,4 +36,13 @@ class AccountService(
         val newServices = account.services + listOf(service)
         accountDatabasePort.updateServicesById(accountId, newServices)
     }
+
+    override suspend fun findAccountById(accountId: String): Account {
+        val account = accountDatabasePort.findById(accountId).getOrElse {
+            log.error("error occurred when findById", it)
+            throw Exception("No such user with account id")
+        }
+
+        return account
+    }
 }

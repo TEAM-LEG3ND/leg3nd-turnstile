@@ -6,4 +6,6 @@ interface AccountServicePort {
     suspend fun create(newAccount: Account): String
 
     suspend fun addService(accountId: String, serviceType: Account.Service.ServiceType)
+
+    suspend fun findAccountById(accountId: String): Account
 }

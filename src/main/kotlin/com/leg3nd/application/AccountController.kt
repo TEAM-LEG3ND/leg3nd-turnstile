@@ -1,5 +1,6 @@
 package com.leg3nd.application
 
+import com.leg3nd.application.dto.AccountResponse
 import com.leg3nd.application.dto.AddServiceRequest
 import com.leg3nd.application.dto.CreateAccountRequest
 import com.leg3nd.domain.core.model.Account
@@ -23,6 +24,10 @@ class AccountController(
                 throw BadRequestException("Please check ServiceType", it)
             }
         accountServicePort.addService(addServiceRequest.accountId, serviceType)
+    }
+
+    suspend fun getAccountById(accountId: String): AccountResponse {
+        return AccountResponse.fromDomain(accountServicePort.findAccountById(accountId))
     }
 
     private fun String.toServiceType(): Account.Service.ServiceType =
