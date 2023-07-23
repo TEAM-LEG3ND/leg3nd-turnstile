@@ -42,7 +42,7 @@ class MongoAccountDatabaseAdapter(
     }
 
     override suspend fun updateServicesById(id: String, services: List<Account.Service>): Result<Unit> = runCatching {
-        val documentId = id.toId<AccountDocument>()
+        val documentId = id.toObjectId()
         val documentServices = services.map { AccountDocument.Service.fromDomain(it) }
 
         accountCollection.findOneAndUpdate(
