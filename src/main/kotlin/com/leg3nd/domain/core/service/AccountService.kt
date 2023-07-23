@@ -6,6 +6,7 @@ import com.leg3nd.domain.ports.database.AccountDatabasePort
 import io.ktor.server.plugins.*
 import org.koin.core.annotation.Single
 import org.slf4j.LoggerFactory
+import java.time.LocalDateTime
 
 @Single
 class AccountService(
@@ -19,11 +20,18 @@ class AccountService(
         return createdAccountId
     }
 
-    override suspend fun addService(accountId: String, service: Account.Service) {
+    override suspend fun addService(accountId: String, serviceType: Account.Service.ServiceType) {
         val account = accountDatabasePort.findById(accountId).getOrElse {
             log.error("error occurred when findById", it)
             throw BadRequestException("No such user with account id")
         }
+
+        val service = Account.Service(
+            type = serviceType,
+            status = Account.Status.OK,
+            createdAt = LocalDateTime.now(),
+            updatedAt = LocalDateTime.now(),
+        )
 
         val newServices = account.services + listOf(service)
         accountDatabasePort.updateServicesById(accountId, newServices)
