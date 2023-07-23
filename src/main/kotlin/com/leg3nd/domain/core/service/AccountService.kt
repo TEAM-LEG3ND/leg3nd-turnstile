@@ -28,7 +28,7 @@ class AccountService(
 
         val service = Account.Service(
             type = serviceType,
-            status = Account.Status.OK,
+            status = Account.Status.DRAFT,
             createdAt = LocalDateTime.now(),
             updatedAt = LocalDateTime.now(),
         )
