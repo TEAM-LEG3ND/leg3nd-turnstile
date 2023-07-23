@@ -15,3 +15,6 @@ Content-Type: application/json
   "account_id": "someId",
   "service_type": "STUDIUM"
 }
+
+###
+GET http://localhost:8080/account/{{accountId}}
