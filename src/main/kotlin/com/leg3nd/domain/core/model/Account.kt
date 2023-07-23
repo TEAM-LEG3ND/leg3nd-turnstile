@@ -17,17 +17,12 @@ data class Account(
         val type: ServiceType,
     ) {
         data class Studium(
-            val nickname: String,
-            val profileImageUrl: String,
             var status: Status,
-            val intro: String,
             val createdAt: LocalDateTime = LocalDateTime.now(),
             var updatedAt: LocalDateTime = LocalDateTime.now(),
         ) : Service(ServiceType.STUDIUM)
 
         data class BreadN(
-            val nickname: String,
-            val profileImageUrl: String,
             var status: Status,
             val createdAt: LocalDateTime = LocalDateTime.now(),
             var updatedAt: LocalDateTime = LocalDateTime.now(),

@@ -45,20 +45,14 @@ data class AccountDocument(
 
         @Serializable
         data class Studium(
-            val nickname: String,
-            val profileImageUrl: String,
             var status: Status,
-            val intro: String,
             val createdAt: LocalDateTime,
             var updatedAt: LocalDateTime,
         ) : Service(ServiceType.STUDIUM) {
             companion object {
                 fun fromDomain(studiumDomain: Account.Service.Studium): Studium =
                     Studium(
-                        nickname = studiumDomain.nickname,
-                        profileImageUrl = studiumDomain.profileImageUrl,
                         status = Status.fromDomain(studiumDomain.status),
-                        intro = studiumDomain.intro,
                         createdAt = studiumDomain.createdAt.toKotlinLocalDateTime(),
                         updatedAt = studiumDomain.updatedAt.toKotlinLocalDateTime(),
                     )
@@ -66,10 +60,7 @@ data class AccountDocument(
 
             fun toStudiumDomain(): Account.Service.Studium =
                 Account.Service.Studium(
-                    nickname = this.nickname,
-                    profileImageUrl = this.profileImageUrl,
                     status = this.status.toDomain(),
-                    intro = this.intro,
                     createdAt = this.createdAt.toJavaLocalDateTime(),
                     updatedAt = this.updatedAt.toJavaLocalDateTime(),
                 )
@@ -77,8 +68,6 @@ data class AccountDocument(
 
         @Serializable
         data class BreadN(
-            val nickname: String,
-            val profileImageUrl: String,
             var status: Status,
             val createdAt: LocalDateTime,
             var updatedAt: LocalDateTime,
@@ -86,8 +75,6 @@ data class AccountDocument(
             companion object {
                 fun fromDomain(breadNDomain: Account.Service.BreadN): BreadN =
                     BreadN(
-                        nickname = breadNDomain.nickname,
-                        profileImageUrl = breadNDomain.profileImageUrl,
                         status = Status.fromDomain(breadNDomain.status),
                         createdAt = breadNDomain.createdAt.toKotlinLocalDateTime(),
                         updatedAt = breadNDomain.updatedAt.toKotlinLocalDateTime(),
@@ -96,8 +83,6 @@ data class AccountDocument(
 
             fun toBreadNDomain(): Account.Service.BreadN =
                 Account.Service.BreadN(
-                    nickname = this.nickname,
-                    profileImageUrl = this.profileImageUrl,
                     status = this.status.toDomain(),
                     createdAt = this.createdAt.toJavaLocalDateTime(),
                     updatedAt = this.updatedAt.toJavaLocalDateTime(),
