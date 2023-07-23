@@ -1,6 +1,7 @@
 package com.leg3nd.plugins
 
 import com.leg3nd.application.AccountController
+import com.leg3nd.application.dto.AddServiceRequest
 import com.leg3nd.application.dto.CreateAccountRequest
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -23,6 +24,13 @@ fun Application.configureRouting() {
                 val createdAccountId = accountController.create(createAccountRequestDto)
 
                 call.respondText(createdAccountId)
+                call.respond(HttpStatusCode.Created)
+            }
+
+            post("/service") {
+                val addServiceRequestDto = call.receive<AddServiceRequest>()
+                accountController.addService(addServiceRequestDto)
+
                 call.respond(HttpStatusCode.Created)
             }
         }
