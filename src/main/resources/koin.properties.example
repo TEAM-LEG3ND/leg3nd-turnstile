@@ -1,0 +1,6 @@
+mongo.uri=some_uri
+jwt.secret=
+jwt.duration=
+jwt.refreshSecret=
+jwt.refreshDuration=
+jwt.audience=
