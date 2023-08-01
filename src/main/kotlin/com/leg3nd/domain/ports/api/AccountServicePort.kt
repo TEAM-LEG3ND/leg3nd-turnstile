@@ -8,4 +8,6 @@ interface AccountServicePort {
     suspend fun addService(accountId: String, serviceType: Account.Service.ServiceType)
 
     suspend fun findAccountById(accountId: String): Account
+
+    suspend fun findAccountByEmail(email: String): Account?
 }
