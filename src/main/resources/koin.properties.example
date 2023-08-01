@@ -4,3 +4,5 @@ jwt.duration=
 jwt.refreshSecret=
 jwt.refreshDuration=
 jwt.audience=
+oAuth.google.clientId=
+oAuth.google.clientSecret=
