@@ -11,9 +11,7 @@ import org.litote.kmongo.coroutine.coroutine
 import org.litote.kmongo.eq
 import org.litote.kmongo.id.toId
 import org.litote.kmongo.reactivestreams.KMongo
-import org.litote.kmongo.reactivestreams.getCollection
 import org.litote.kmongo.setValue
-import org.litote.kmongo.toId
 
 @Single(createdAtStart = true)
 class MongoAccountDatabaseAdapter(
@@ -37,6 +35,13 @@ class MongoAccountDatabaseAdapter(
 
         val accountDocument = accountCollection.findOneById(documentId)
             ?: throw NoSuchElementException("Account Document not found with id $documentId")
+
+        accountDocument.toDomain()
+    }
+
+    override suspend fun findByEmail(email: String): Result<Account> = runCatching {
+        val accountDocument = accountCollection.findOne(Account::email eq email)
+            ?: throw NoSuchElementException("Account Document not found with email $email")
 
         accountDocument.toDomain()
     }

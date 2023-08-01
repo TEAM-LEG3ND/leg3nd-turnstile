@@ -8,5 +8,7 @@ interface AccountDatabasePort {
 
     suspend fun findById(id: String): Result<Account>
 
+    suspend fun findByEmail(email: String): Result<Account>
+
     suspend fun updateServicesById(id: String, services: List<Account.Service>): Result<Unit>
 }

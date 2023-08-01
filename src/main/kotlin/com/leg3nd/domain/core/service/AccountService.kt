@@ -50,4 +50,13 @@ class AccountService(
 
         return account
     }
+
+    override suspend fun findAccountByEmail(email: String): Account? {
+        val account = accountDatabasePort.findByEmail(email).getOrElse {
+            log.error("error occurred when findAccountByEmail", it)
+            return null
+        }
+
+        return account
+    }
 }
