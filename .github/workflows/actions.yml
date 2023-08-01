@@ -17,13 +17,11 @@ jobs:
           echo "${{ secrets.APPLICATION_YAML }}" >> ./src/main/resources/application.yaml
           touch ./src/main/resources/koin.properties
           echo "${{ secrets.KOIN_PROPERTIES }}" >> ./src/main/resources/koin.properties
-      - name: export env
+      - name: Build and push
         run: |
           export REGISTRY_HOST=${{ secrets.REGISTRY_HOST }}
           export REGISTRY_ID=${{ secrets.REGISTRY_ID }}
           export REGISTRY_PASSWORD=${{ secrets.REGISTRY_PASSWORD }}
-      - name: Build and push
-        run: |
           ./gradlew publishImage
   docker-pull-and-restart:
     environment: dev
