@@ -16,6 +16,6 @@ fun Application.configureKoin() {
     install(Koin) {
         slf4jLogger()
         modules(KoinModule().module)
-        fileProperties(fileName = "/application.properties")
+        fileProperties()
     }
 }
