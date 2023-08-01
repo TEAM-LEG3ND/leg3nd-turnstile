@@ -15,7 +15,6 @@ data class AccountDocument(
     @Contextual
     val _id: Id<AccountDocument> = newId(),
     var email: String,
-    var nickname: String,
     var fullName: String,
     var oAuthProvider: OAuthProvider,
     var status: Status,
@@ -109,7 +108,6 @@ data class AccountDocument(
             AccountDocument(
                 _id = account.id?.toId() ?: newId(),
                 email = account.email,
-                nickname = account.nickname,
                 fullName = account.fullName,
                 oAuthProvider = OAuthProvider.fromDomain(account.oAuthProvider),
                 status = Status.fromDomain(account.status),
@@ -123,7 +121,6 @@ data class AccountDocument(
         Account(
             id = this._id.toString(),
             email = this.email,
-            nickname = this.nickname,
             fullName = this.fullName,
             oAuthProvider = this.oAuthProvider.toDomain(),
             status = this.status.toDomain(),
