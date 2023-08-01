@@ -6,13 +6,16 @@ import com.leg3nd.application.dto.TokenPairDto
 import com.leg3nd.domain.core.model.Account
 import com.leg3nd.domain.core.service.AuthService
 import org.koin.core.annotation.Single
+import org.slf4j.LoggerFactory
 
 @Single
 class AuthController(
     private val authService: AuthService,
 ) {
+    private val log = LoggerFactory.getLogger(this::class.java)
     suspend fun login(oAuthProvider: Account.OAuthProvider, oAuthLoginRequest: OAuthLoginRequest): TokenPairDto {
         val token = authService.login(oAuthProvider, oAuthLoginRequest.code).getOrElse {
+            log.error("login failed", it)
             throw Exception("login failed")
         }
         return TokenPairDto.fromDomain(token)
