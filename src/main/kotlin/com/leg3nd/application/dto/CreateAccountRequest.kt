@@ -6,7 +6,6 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class CreateAccountRequest(
     var email: String,
-    var nickname: String,
     var fullName: String,
 ) {
     fun toDomain(oAuthProviderReq: String): Result<Account> = runCatching {
