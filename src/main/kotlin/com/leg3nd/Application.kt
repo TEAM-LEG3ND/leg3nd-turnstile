@@ -1,17 +1,17 @@
 package com.leg3nd
 
-import com.leg3nd.plugins.*
+import com.leg3nd.plugins.configureJwt
+import com.leg3nd.plugins.configureKoin
+import com.leg3nd.plugins.configureRouting
+import com.leg3nd.plugins.configureSerialization
 import io.ktor.server.application.*
-import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 
-fun main() {
-    embeddedServer(Netty, port = 8080, host = "0.0.0.0", module = Application::module)
-        .start(wait = true)
-}
+fun main(args: Array<String>) = EngineMain.main(args)
 
 fun Application.module() {
     configureSerialization()
-    configureRouting()
     configureKoin()
+    configureJwt()
+    configureRouting()
 }
