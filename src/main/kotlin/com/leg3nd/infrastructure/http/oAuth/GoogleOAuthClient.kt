@@ -8,7 +8,9 @@ import io.ktor.client.engine.cio.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
 import io.ktor.serialization.kotlinx.json.*
-import io.ktor.server.util.*
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonNamingStrategy
 import org.koin.core.annotation.Property
 import org.koin.core.annotation.Single
 
@@ -18,29 +20,28 @@ class GoogleOAuthClient(
     @Property("oAuth.google.clientSecret") private val googleClientSecret: String,
     @Property("oAuth.google.redirectUri") private val googleRedirectUri: String,
 ) : OAuthClient {
+
+    @OptIn(ExperimentalSerializationApi::class)
     private val client = HttpClient(CIO) {
         install(ContentNegotiation) {
-            json()
+            json(
+                Json {
+                    namingStrategy = JsonNamingStrategy.SnakeCase
+                    ignoreUnknownKeys = true
+                },
+            )
         }
     }
 
     override suspend fun getOAuthToken(code: String): OAuthTokenResponse {
-        val url = "https://accounts.google.com/o/oauth2/token"
+        val url = "https://accounts.google.com/o/oauth2/token?" +
+            "client_id=$googleClientId" +
+            "&client_secret=$googleClientSecret" +
+            "&redirect_uri=$googleRedirectUri" +
+            "&grant_type=authorization_code" +
+            "&code=$code"
 
-        val response: OAuthTokenResponse = client.post(
-            url {
-                this.host = url
-                this.parameters.apply {
-                    append("client_id", googleClientId)
-                    append("client_secret", googleClientSecret)
-                    append("redirect_uri", googleRedirectUri)
-                    append("grant_type", "authorization_code")
-                    append("code", code)
-                }
-            },
-        ).body()
-
-        return response
+        return client.post(url).body<OAuthTokenResponse>()
     }
 
     override suspend fun getOAuthUser(accessToken: String): OAuthUserResponse {
@@ -49,7 +50,7 @@ class GoogleOAuthClient(
         val response: OAuthUserResponse = client.get(
             url,
         ) {
-            bearerAuth(url)
+            bearerAuth(accessToken)
         }.body()
 
         return response
