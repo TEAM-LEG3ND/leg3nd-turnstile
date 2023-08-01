@@ -5,7 +5,6 @@ import java.time.LocalDateTime
 data class Account(
     val id: String? = null,
     var email: String,
-    var nickname: String,
     var fullName: String,
     var oAuthProvider: OAuthProvider,
     var status: Status = Status.OK,
