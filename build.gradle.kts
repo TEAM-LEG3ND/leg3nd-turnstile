@@ -91,3 +91,30 @@ tasks.whenTaskAdded {
         enabled = false
     }
 }
+
+jib {
+    from {
+        platforms {
+            platform {
+                architecture = "arm64"
+                os = "linux"
+            }
+        }
+    }
+}
+
+ktor {
+    docker {
+        localImageName.set("leg3nd-turnstile")
+        imageTag.set("latest")
+        jreVersion.set(io.ktor.plugin.features.JreVersion.JRE_17)
+        externalRegistry.set(
+            io.ktor.plugin.features.DockerImageRegistry.externalRegistry(
+                hostname = providers.environmentVariable("REGISTRY_HOST"),
+                username = providers.environmentVariable("REGISTRY_ID"),
+                password = providers.environmentVariable("REGISTRY_PASSWORD"),
+                project = provider { "leg3nd-turnstile" },
+            ),
+        )
+    }
+}
