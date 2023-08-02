@@ -4,6 +4,7 @@ import com.leg3nd.plugins.configureJwt
 import com.leg3nd.plugins.configureKoin
 import com.leg3nd.plugins.configureRouting
 import com.leg3nd.plugins.configureSerialization
+import com.leg3nd.plugins.configureSwagger
 import io.ktor.server.application.*
 import io.ktor.server.netty.*
 
@@ -13,5 +14,6 @@ fun Application.module() {
     configureSerialization()
     configureKoin()
     configureJwt()
+    configureSwagger()
     configureRouting()
 }
