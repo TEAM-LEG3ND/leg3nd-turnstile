@@ -1,5 +1,6 @@
 package com.leg3nd
 
+import com.leg3nd.plugins.configureCors
 import com.leg3nd.plugins.configureJwt
 import com.leg3nd.plugins.configureKoin
 import com.leg3nd.plugins.configureRouting
@@ -16,4 +17,5 @@ fun Application.module() {
     configureJwt()
     configureSwagger()
     configureRouting()
+    configureCors()
 }
