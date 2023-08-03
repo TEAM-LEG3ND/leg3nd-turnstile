@@ -31,5 +31,13 @@ fun Application.configureSwagger() {
         tag("Auth") {
             description = "Auth APIs"
         }
+        server {
+            url = "https://api.server.d0lim.com/auth/"
+            description = "Dev(mac mini)"
+        }
+        server {
+            url = "http://localhost:8080"
+            description = "Local"
+        }
     }
 }
