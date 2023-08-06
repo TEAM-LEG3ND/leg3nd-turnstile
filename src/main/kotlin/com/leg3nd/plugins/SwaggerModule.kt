@@ -12,6 +12,7 @@ fun Application.configureSwagger() {
 
     install(SwaggerUI) {
         swagger {
+            rootHostPath = "/auth"
             forwardRoot = false
             swaggerUrl = "swagger-ui"
             onlineSpecValidator()
