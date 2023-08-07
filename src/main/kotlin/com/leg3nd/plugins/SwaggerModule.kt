@@ -12,7 +12,7 @@ fun Application.configureSwagger() {
 
     install(SwaggerUI) {
         swagger {
-            rootHostPath = "/auth"
+            rootHostPath = "/turnstile"
             forwardRoot = false
             swaggerUrl = "swagger-ui"
             onlineSpecValidator()
