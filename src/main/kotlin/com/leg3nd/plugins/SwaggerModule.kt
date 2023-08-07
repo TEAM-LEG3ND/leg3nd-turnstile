@@ -33,7 +33,7 @@ fun Application.configureSwagger() {
             description = "Auth APIs"
         }
         server {
-            url = "https://api.server.d0lim.com/auth/"
+            url = "https://api.server.d0lim.com/turnstile/"
             description = "Dev(mac mini)"
         }
         server {
