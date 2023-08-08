@@ -6,7 +6,9 @@ import io.github.smiley4.ktorswaggerui.dsl.AuthType
 import io.github.smiley4.ktorswaggerui.dsl.SwaggerUiSort
 import io.github.smiley4.ktorswaggerui.dsl.SwaggerUiSyntaxHighlight
 import io.ktor.server.application.*
+import kotlinx.serialization.ExperimentalSerializationApi
 
+@OptIn(ExperimentalSerializationApi::class)
 fun Application.configureSwagger() {
     val jwtAuthSchemeName = "auth-jwt"
 
@@ -25,12 +27,6 @@ fun Application.configureSwagger() {
             type = AuthType.HTTP
             scheme = AuthScheme.BEARER
             bearerFormat = "jwt"
-        }
-        tag("Account") {
-            description = "Account APIs"
-        }
-        tag("Auth") {
-            description = "Auth APIs"
         }
         server {
             url = "https://api.server.d0lim.com/turnstile/"

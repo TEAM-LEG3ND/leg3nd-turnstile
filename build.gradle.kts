@@ -39,6 +39,7 @@ dependencies {
     implementation("io.ktor:ktor-server-config-yaml:$ktor_version")
 
     implementation("io.github.smiley4:ktor-swagger-ui:2.3.0")
+    implementation("io.swagger.core.v3:swagger-annotations:2.2.15")
 
     implementation("io.ktor:ktor-server-auth:$ktor_version")
     implementation("io.ktor:ktor-server-auth-jwt:$ktor_version")
