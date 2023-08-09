@@ -4,23 +4,18 @@ import com.leg3nd.domain.core.model.Account
 import com.leg3nd.domain.ports.database.AccountDatabasePort
 import com.leg3nd.infrastructure.database.mongo.document.AccountDocument
 import org.bson.types.ObjectId
-import org.koin.core.annotation.Property
 import org.koin.core.annotation.Single
 import org.litote.kmongo.Id
-import org.litote.kmongo.coroutine.coroutine
 import org.litote.kmongo.eq
 import org.litote.kmongo.id.toId
-import org.litote.kmongo.reactivestreams.KMongo
 import org.litote.kmongo.setValue
 
 @Single(createdAtStart = true)
 class MongoAccountDatabaseAdapter(
-    @Property("mongo.uri") mongoUri: String,
+    mongoDatabaseConnector: MongoDatabaseConnector,
 ) : AccountDatabasePort {
 
-    private val client = KMongo.createClient(mongoUri).coroutine
-    private val database = client.getDatabase("leg3nd-account")
-    private val accountCollection = database.getCollection<AccountDocument>()
+    private val accountCollection = mongoDatabaseConnector.database.getCollection<AccountDocument>()
 
     override suspend fun create(newAccount: Account): String {
         val newAccountDocument = AccountDocument.fromDomain(newAccount)
@@ -40,7 +35,7 @@ class MongoAccountDatabaseAdapter(
     }
 
     override suspend fun findByEmail(email: String): Result<Account> = runCatching {
-        val accountDocument = accountCollection.findOne(Account::email eq email)
+        val accountDocument = accountCollection.findOne(AccountDocument::email eq email)
             ?: throw NoSuchElementException("Account Document not found with email $email")
 
         accountDocument.toDomain()
