@@ -1,11 +1,12 @@
 package com.leg3nd
 
-import com.leg3nd.plugins.*
+import com.leg3nd.plugins.configureRouting
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.server.testing.*
-import kotlin.test.*
+import kotlin.test.Test
+import kotlin.test.assertEquals
 
 class ApplicationTest {
     @Test
@@ -13,9 +14,9 @@ class ApplicationTest {
         application {
             configureRouting()
         }
-        client.get("/").apply {
+        client.get("/api/v1/ping").apply {
             assertEquals(HttpStatusCode.OK, status)
-            assertEquals("Hello World!", bodyAsText())
+            assertEquals("pong", bodyAsText())
         }
     }
 }
