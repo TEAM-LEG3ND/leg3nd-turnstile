@@ -38,8 +38,7 @@ fun Routing.serviceEndpointRoute() {
             val upsertServiceEndpointRequest = call.receive<UpsertServiceEndpointRequest>()
             val upsertServiceEndpointResponse = serviceEndpointController.upsert(upsertServiceEndpointRequest)
 
-            call.respond(HttpStatusCode.Created)
-            call.respond(upsertServiceEndpointResponse)
+            call.respond(HttpStatusCode.OK, upsertServiceEndpointResponse)
         }
     }
 }
