@@ -6,9 +6,10 @@ import kotlinx.datetime.toJavaLocalDateTime
 import kotlinx.datetime.toKotlinLocalDateTime
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
+import org.bson.types.ObjectId
 import org.litote.kmongo.Id
+import org.litote.kmongo.id.toId
 import org.litote.kmongo.newId
-import org.litote.kmongo.toId
 
 @Serializable
 data class AccountDocument(
@@ -106,7 +107,7 @@ data class AccountDocument(
     companion object {
         fun fromDomain(account: Account): AccountDocument =
             AccountDocument(
-                _id = account.id?.toId() ?: newId(),
+                _id = account.id?.toObjectId() ?: newId(),
                 email = account.email,
                 fullName = account.fullName,
                 oAuthProvider = OAuthProvider.fromDomain(account.oAuthProvider),
@@ -129,3 +130,6 @@ data class AccountDocument(
             updatedAt = this.updatedAt.toJavaLocalDateTime(),
         )
 }
+
+private fun String.toObjectId(): Id<AccountDocument> =
+    ObjectId(this).toId()

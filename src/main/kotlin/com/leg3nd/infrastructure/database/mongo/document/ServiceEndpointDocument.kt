@@ -6,9 +6,10 @@ import kotlinx.datetime.toJavaLocalDateTime
 import kotlinx.datetime.toKotlinLocalDateTime
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
+import org.bson.types.ObjectId
 import org.litote.kmongo.Id
+import org.litote.kmongo.id.toId
 import org.litote.kmongo.newId
-import org.litote.kmongo.toId
 
 @Serializable
 data class ServiceEndpointDocument(
@@ -23,7 +24,7 @@ data class ServiceEndpointDocument(
 ) {
     companion object {
         fun fromDomain(domain: ServiceEndpoint) = ServiceEndpointDocument(
-            _id = domain.id?.toId() ?: newId(),
+            _id = domain.id?.toObjectId() ?: newId(),
             name = domain.name,
             basePath = domain.basePath,
             publicEndpoints = domain.publicEndpoints,
@@ -43,3 +44,6 @@ data class ServiceEndpointDocument(
         updatedAt = this.updatedAt.toJavaLocalDateTime(),
     )
 }
+
+private fun String.toObjectId(): Id<ServiceEndpointDocument> =
+    ObjectId(this).toId()
