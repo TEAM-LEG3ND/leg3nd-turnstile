@@ -31,7 +31,7 @@ data class ServiceEndpointResponse(
             publicEndpoints = domain.publicEndpoints,
             draftEndpoints = domain.draftEndpoints,
             createdAt = domain.createdAt.format(DateTimeFormatter.ISO_DATE_TIME),
-            updatedAt = domain.createdAt.format(DateTimeFormatter.ISO_DATE_TIME),
+            updatedAt = domain.updatedAt.format(DateTimeFormatter.ISO_DATE_TIME),
         )
     }
 }
