@@ -5,7 +5,7 @@ import com.leg3nd.domain.ports.api.AccountServicePort
 import com.leg3nd.domain.ports.database.AccountDatabasePort
 import org.koin.core.annotation.Single
 import org.slf4j.LoggerFactory
-import java.time.LocalDateTime
+import java.time.OffsetDateTime
 
 @Single
 class AccountService(
@@ -34,8 +34,8 @@ class AccountService(
         val service = Account.Service(
             type = serviceType,
             status = Account.Status.DRAFT,
-            createdAt = LocalDateTime.now(),
-            updatedAt = LocalDateTime.now(),
+            createdAt = OffsetDateTime.now(),
+            updatedAt = OffsetDateTime.now(),
         )
 
         val newServices = account.services + listOf(service)

@@ -5,7 +5,7 @@ import com.leg3nd.domain.ports.api.ServiceEndpointServicePort
 import com.leg3nd.domain.ports.database.ServiceEndpointDatabasePort
 import org.koin.core.annotation.Single
 import org.slf4j.LoggerFactory
-import java.time.LocalDateTime
+import java.time.OffsetDateTime
 
 @Single
 class ServiceEndpointService(
@@ -32,7 +32,7 @@ class ServiceEndpointService(
                 publicEndpoints = publicEndpoints,
                 draftEndpoints = draftEndpoints,
                 createdAt = it.createdAt,
-                updatedAt = LocalDateTime.now(),
+                updatedAt = OffsetDateTime.now(),
             )
         } ?: ServiceEndpoint(
             name = name,
