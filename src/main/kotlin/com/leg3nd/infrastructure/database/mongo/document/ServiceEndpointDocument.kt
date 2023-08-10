@@ -1,9 +1,8 @@
 package com.leg3nd.infrastructure.database.mongo.document
 
+import com.leg3nd.common.util.toEpochMilli
+import com.leg3nd.common.util.toOffsetDateTime
 import com.leg3nd.domain.core.model.ServiceEndpoint
-import kotlinx.datetime.LocalDateTime
-import kotlinx.datetime.toJavaLocalDateTime
-import kotlinx.datetime.toKotlinLocalDateTime
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import org.bson.types.ObjectId
@@ -19,8 +18,8 @@ data class ServiceEndpointDocument(
     var basePath: String,
     var publicEndpoints: List<String>,
     var draftEndpoints: List<String>,
-    val createdAt: LocalDateTime,
-    var updatedAt: LocalDateTime,
+    val createdAt: Long,
+    var updatedAt: Long,
 ) {
     companion object {
         fun fromDomain(domain: ServiceEndpoint) = ServiceEndpointDocument(
@@ -29,8 +28,8 @@ data class ServiceEndpointDocument(
             basePath = domain.basePath,
             publicEndpoints = domain.publicEndpoints,
             draftEndpoints = domain.draftEndpoints,
-            createdAt = domain.createdAt.toKotlinLocalDateTime(),
-            updatedAt = domain.updatedAt.toKotlinLocalDateTime(),
+            createdAt = domain.createdAt.toEpochMilli(),
+            updatedAt = domain.updatedAt.toEpochMilli(),
         )
     }
 
@@ -40,8 +39,8 @@ data class ServiceEndpointDocument(
         basePath = this.basePath,
         publicEndpoints = this.publicEndpoints,
         draftEndpoints = this.draftEndpoints,
-        createdAt = this.createdAt.toJavaLocalDateTime(),
-        updatedAt = this.updatedAt.toJavaLocalDateTime(),
+        createdAt = this.createdAt.toOffsetDateTime(),
+        updatedAt = this.updatedAt.toOffsetDateTime(),
     )
 }
 

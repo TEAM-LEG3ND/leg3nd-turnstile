@@ -2,9 +2,8 @@ package com.leg3nd.application.dto
 
 import com.leg3nd.domain.core.model.ServiceEndpoint
 import io.swagger.v3.oas.annotations.media.Schema
-import kotlinx.datetime.LocalDateTime
-import kotlinx.datetime.toKotlinLocalDateTime
 import kotlinx.serialization.Serializable
+import java.time.format.DateTimeFormatter
 
 @Serializable
 @Schema
@@ -20,9 +19,9 @@ data class ServiceEndpointResponse(
     @field:Schema(name = "draft_endpoints")
     val draftEndpoints: List<String>,
     @field:Schema(name = "created_at")
-    val createdAt: LocalDateTime,
+    val createdAt: String,
     @field:Schema(name = "updated_at")
-    val updatedAt: LocalDateTime,
+    val updatedAt: String,
 ) {
     companion object {
         fun fromDomain(domain: ServiceEndpoint) = ServiceEndpointResponse(
@@ -31,8 +30,8 @@ data class ServiceEndpointResponse(
             basePath = domain.basePath,
             publicEndpoints = domain.publicEndpoints,
             draftEndpoints = domain.draftEndpoints,
-            createdAt = domain.createdAt.toKotlinLocalDateTime(),
-            updatedAt = domain.updatedAt.toKotlinLocalDateTime(),
+            createdAt = domain.createdAt.format(DateTimeFormatter.ISO_DATE_TIME),
+            updatedAt = domain.createdAt.format(DateTimeFormatter.ISO_DATE_TIME),
         )
     }
 }

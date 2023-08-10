@@ -1,9 +1,8 @@
 package com.leg3nd.infrastructure.database.mongo.document
 
+import com.leg3nd.common.util.toEpochMilli
+import com.leg3nd.common.util.toOffsetDateTime
 import com.leg3nd.domain.core.model.Account
-import kotlinx.datetime.LocalDateTime
-import kotlinx.datetime.toJavaLocalDateTime
-import kotlinx.datetime.toKotlinLocalDateTime
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import org.bson.types.ObjectId
@@ -20,23 +19,23 @@ data class AccountDocument(
     var oAuthProvider: OAuthProvider,
     var status: Status,
     var services: List<Service>,
-    val createdAt: LocalDateTime,
-    var updatedAt: LocalDateTime,
+    val createdAt: Long,
+    var updatedAt: Long,
 ) {
     @Serializable
     data class Service(
         val type: ServiceType,
         var status: Status,
-        val createdAt: LocalDateTime,
-        var updatedAt: LocalDateTime,
+        val createdAt: Long,
+        var updatedAt: Long,
     ) {
         companion object {
             fun fromDomain(serviceDomain: Account.Service): Service =
                 Service(
                     type = ServiceType.fromDomain(serviceDomain.type),
                     status = Status.fromDomain(serviceDomain.status),
-                    createdAt = serviceDomain.createdAt.toKotlinLocalDateTime(),
-                    updatedAt = serviceDomain.updatedAt.toKotlinLocalDateTime(),
+                    createdAt = serviceDomain.createdAt.toEpochMilli(),
+                    updatedAt = serviceDomain.updatedAt.toEpochMilli(),
                 )
         }
 
@@ -44,8 +43,8 @@ data class AccountDocument(
             Account.Service(
                 type = this.type.toDomain(),
                 status = this.status.toDomain(),
-                createdAt = this.createdAt.toJavaLocalDateTime(),
-                updatedAt = this.updatedAt.toJavaLocalDateTime(),
+                createdAt = this.createdAt.toOffsetDateTime(),
+                updatedAt = this.updatedAt.toOffsetDateTime(),
             )
 
         enum class ServiceType {
@@ -113,8 +112,8 @@ data class AccountDocument(
                 oAuthProvider = OAuthProvider.fromDomain(account.oAuthProvider),
                 status = Status.fromDomain(account.status),
                 services = account.services.map { Service.fromDomain(it) },
-                createdAt = account.createdAt.toKotlinLocalDateTime(),
-                updatedAt = account.updatedAt.toKotlinLocalDateTime(),
+                createdAt = account.createdAt.toEpochMilli(),
+                updatedAt = account.updatedAt.toEpochMilli(),
             )
     }
 
@@ -126,8 +125,8 @@ data class AccountDocument(
             oAuthProvider = this.oAuthProvider.toDomain(),
             status = this.status.toDomain(),
             services = this.services.map { it.toDomain() },
-            createdAt = this.createdAt.toJavaLocalDateTime(),
-            updatedAt = this.updatedAt.toJavaLocalDateTime(),
+            createdAt = this.createdAt.toOffsetDateTime(),
+            updatedAt = this.updatedAt.toOffsetDateTime(),
         )
 }
 

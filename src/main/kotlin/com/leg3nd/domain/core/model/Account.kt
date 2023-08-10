@@ -1,6 +1,6 @@
 package com.leg3nd.domain.core.model
 
-import java.time.LocalDateTime
+import java.time.OffsetDateTime
 
 data class Account(
     val id: String? = null,
@@ -9,14 +9,14 @@ data class Account(
     var oAuthProvider: OAuthProvider,
     var status: Status = Status.OK,
     var services: List<Service>,
-    val createdAt: LocalDateTime = LocalDateTime.now(),
-    var updatedAt: LocalDateTime = LocalDateTime.now(),
+    val createdAt: OffsetDateTime = OffsetDateTime.now(),
+    var updatedAt: OffsetDateTime = OffsetDateTime.now(),
 ) {
     data class Service(
         val type: ServiceType,
         var status: Status,
-        val createdAt: LocalDateTime = LocalDateTime.now(),
-        var updatedAt: LocalDateTime = LocalDateTime.now(),
+        val createdAt: OffsetDateTime = OffsetDateTime.now(),
+        var updatedAt: OffsetDateTime = OffsetDateTime.now(),
     ) {
 
         enum class ServiceType {

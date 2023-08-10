@@ -1,6 +1,6 @@
 package com.leg3nd.domain.core.model
 
-import java.time.LocalDateTime
+import java.time.OffsetDateTime
 
 data class ServiceEndpoint(
     val id: String? = null,
@@ -8,6 +8,6 @@ data class ServiceEndpoint(
     var basePath: String,
     var publicEndpoints: List<String>,
     var draftEndpoints: List<String>,
-    val createdAt: LocalDateTime = LocalDateTime.now(),
-    var updatedAt: LocalDateTime = LocalDateTime.now(),
+    val createdAt: OffsetDateTime = OffsetDateTime.now(),
+    var updatedAt: OffsetDateTime = OffsetDateTime.now(),
 )
