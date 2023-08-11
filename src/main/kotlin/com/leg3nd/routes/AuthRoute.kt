@@ -83,5 +83,22 @@ fun Routing.authRoute() {
                 call.respond(account)
             }
         }
+
+        route("/internal/api/v1/gateway-auth", {
+            tags = listOf("Gateway Auth")
+            securitySchemeName = "auth-jwt"
+        }) {
+            get({
+                description = "Gateway Auth API"
+            }) {
+                val principal = call.principal<JWTPrincipal>()
+                val accountId = principal!!.payload.getClaim("id").asString()
+
+                val authResponse = authController.authenticate(accountId, Account.Service.ServiceType.STUDIUM)
+
+                authResponse.accountId?.let { call.response.headers.append("x-account-id", it) }
+                call.respond(HttpStatusCode.OK)
+            }
+        }
     }
 }
