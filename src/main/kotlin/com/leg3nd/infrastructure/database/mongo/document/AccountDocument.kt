@@ -1,7 +1,7 @@
 package com.leg3nd.infrastructure.database.mongo.document
 
-import com.leg3nd.common.util.toEpochMilli
-import com.leg3nd.common.util.toOffsetDateTime
+import com.leg3nd.common.util.DateTimeUtil.toEpochMilli
+import com.leg3nd.common.util.DateTimeUtil.toOffsetDateTime
 import com.leg3nd.domain.core.model.Account
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable

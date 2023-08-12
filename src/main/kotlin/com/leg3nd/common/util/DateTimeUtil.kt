@@ -4,8 +4,9 @@ import java.time.Instant
 import java.time.OffsetDateTime
 import java.time.ZoneId
 
-fun OffsetDateTime.toEpochMilli() =
-    this.toInstant().toEpochMilli()
+object DateTimeUtil {
+    fun OffsetDateTime.toEpochMilli() =
+        this.toInstant().toEpochMilli()
 
-fun Long.toOffsetDateTime(zone: ZoneId = ZoneId.systemDefault()): OffsetDateTime =
-    OffsetDateTime.ofInstant(Instant.ofEpochMilli(this), zone)
+    fun Long.toOffsetDateTime(zone: ZoneId = ZoneId.systemDefault()): OffsetDateTime =
+        OffsetDateTime.ofInstant(Instant.ofEpochMilli(this), zone)
