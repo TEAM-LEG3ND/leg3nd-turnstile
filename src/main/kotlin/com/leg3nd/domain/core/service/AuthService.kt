@@ -1,18 +1,19 @@
-package com.leg3nd.application
+package com.leg3nd.domain.core.service
 
 import com.leg3nd.domain.core.model.Account
 import com.leg3nd.domain.core.model.Token
 import com.leg3nd.domain.ports.service.AccountServicePort
+import com.leg3nd.domain.ports.service.AuthServicePort
 import com.leg3nd.domain.ports.service.JwtServicePort
 import com.leg3nd.domain.ports.service.OAuthServicePort
 import org.koin.core.annotation.Single
 
 @Single
-class AuthServiceImpl(
+class AuthService(
     private val accountService: AccountServicePort,
     private val jwtService: JwtServicePort,
     private val oAuthService: OAuthServicePort,
-) : AuthService {
+) : AuthServicePort {
     override suspend fun login(oAuthProvider: Account.OAuthProvider, authorizationCode: String): Result<Token> =
         runCatching {
             val oAuthUser = oAuthService.loginWithOAuth(oAuthProvider, authorizationCode)
