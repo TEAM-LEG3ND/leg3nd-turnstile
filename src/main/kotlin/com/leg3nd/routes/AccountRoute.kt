@@ -1,9 +1,9 @@
 package com.leg3nd.routes
 
-import com.leg3nd.application.AccountController
-import com.leg3nd.application.dto.AccountResponse
-import com.leg3nd.application.dto.AddServiceRequest
-import com.leg3nd.application.dto.CreateAccountRequest
+import com.leg3nd.api.AccountController
+import com.leg3nd.api.dto.AccountResponse
+import com.leg3nd.api.dto.AddServiceRequest
+import com.leg3nd.api.dto.CreateAccountRequest
 import io.github.smiley4.ktorswaggerui.dsl.get
 import io.github.smiley4.ktorswaggerui.dsl.post
 import io.github.smiley4.ktorswaggerui.dsl.route

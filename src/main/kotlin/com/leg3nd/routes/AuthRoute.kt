@@ -1,9 +1,9 @@
 package com.leg3nd.routes
 
-import com.leg3nd.application.AccountController
-import com.leg3nd.application.AuthController
-import com.leg3nd.application.dto.OAuthLoginRequest
-import com.leg3nd.application.dto.TokenResponse
+import com.leg3nd.api.AccountController
+import com.leg3nd.api.AuthController
+import com.leg3nd.api.dto.OAuthLoginRequest
+import com.leg3nd.api.dto.TokenResponse
 import com.leg3nd.domain.core.model.Account
 import io.github.smiley4.ktorswaggerui.dsl.get
 import io.github.smiley4.ktorswaggerui.dsl.post
@@ -84,13 +84,18 @@ fun Routing.authRoute() {
             }
         }
 
-        route("/internal/api/v1/gateway-auth", {
-            tags = listOf("Gateway Auth")
-            securitySchemeName = "auth-jwt"
-        }) {
-            get({
-                description = "Gateway Auth API"
-            }) {
+        route(
+            "/internal/api/v1/gateway-auth",
+            {
+                tags = listOf("Gateway Auth")
+                securitySchemeName = "auth-jwt"
+            },
+        ) {
+            get(
+                {
+                    description = "Gateway Auth API"
+                },
+            ) {
                 val principal = call.principal<JWTPrincipal>()
                 val accountId = principal!!.payload.getClaim("id").asString()
 

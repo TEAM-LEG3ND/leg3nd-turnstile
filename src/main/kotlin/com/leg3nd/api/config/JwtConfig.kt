@@ -1,4 +1,4 @@
-package com.leg3nd.application.config
+package com.leg3nd.api.config
 
 import com.leg3nd.domain.core.service.JwtServiceConfig
 import org.koin.core.annotation.Property

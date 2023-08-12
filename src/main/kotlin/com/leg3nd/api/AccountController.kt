@@ -1,8 +1,8 @@
-package com.leg3nd.application
+package com.leg3nd.api
 
-import com.leg3nd.application.dto.AccountResponse
-import com.leg3nd.application.dto.AddServiceRequest
-import com.leg3nd.application.dto.CreateAccountRequest
+import com.leg3nd.api.dto.AccountResponse
+import com.leg3nd.api.dto.AddServiceRequest
+import com.leg3nd.api.dto.CreateAccountRequest
 import com.leg3nd.domain.core.model.Account
 import com.leg3nd.domain.ports.api.AccountServicePort
 import io.ktor.server.plugins.*

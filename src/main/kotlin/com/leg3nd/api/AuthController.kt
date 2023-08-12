@@ -1,8 +1,8 @@
-package com.leg3nd.application
+package com.leg3nd.api
 
-import com.leg3nd.application.dto.AuthResponse
-import com.leg3nd.application.dto.OAuthLoginRequest
-import com.leg3nd.application.dto.TokenPairDto
+import com.leg3nd.api.dto.AuthResponse
+import com.leg3nd.api.dto.OAuthLoginRequest
+import com.leg3nd.api.dto.TokenPairDto
 import com.leg3nd.domain.core.model.Account
 import com.leg3nd.domain.core.service.AuthService
 import org.koin.core.annotation.Single
