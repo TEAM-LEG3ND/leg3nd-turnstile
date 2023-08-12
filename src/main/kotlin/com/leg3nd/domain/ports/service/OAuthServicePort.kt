@@ -1,4 +1,4 @@
-package com.leg3nd.domain.ports.api
+package com.leg3nd.domain.ports.service
 
 import com.leg3nd.domain.core.model.Account
 import com.leg3nd.domain.core.model.OAuthUser

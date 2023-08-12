@@ -2,9 +2,9 @@ package com.leg3nd.application
 
 import com.leg3nd.domain.core.model.Account
 import com.leg3nd.domain.core.model.Token
-import com.leg3nd.domain.ports.api.AccountServicePort
-import com.leg3nd.domain.ports.api.JwtServicePort
-import com.leg3nd.domain.ports.api.OAuthServicePort
+import com.leg3nd.domain.ports.service.AccountServicePort
+import com.leg3nd.domain.ports.service.JwtServicePort
+import com.leg3nd.domain.ports.service.OAuthServicePort
 import org.koin.core.annotation.Single
 
 @Single

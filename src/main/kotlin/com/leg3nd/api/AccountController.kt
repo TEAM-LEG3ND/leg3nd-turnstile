@@ -4,7 +4,7 @@ import com.leg3nd.api.dto.AccountResponse
 import com.leg3nd.api.dto.AddServiceRequest
 import com.leg3nd.api.dto.CreateAccountRequest
 import com.leg3nd.domain.core.model.Account
-import com.leg3nd.domain.ports.api.AccountServicePort
+import com.leg3nd.domain.ports.service.AccountServicePort
 import io.ktor.server.plugins.*
 import org.koin.core.annotation.Single
 

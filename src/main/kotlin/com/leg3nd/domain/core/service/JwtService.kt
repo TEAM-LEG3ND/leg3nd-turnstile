@@ -3,7 +3,7 @@ package com.leg3nd.domain.core.service
 import com.auth0.jwt.JWT
 import com.auth0.jwt.JWTVerifier
 import com.auth0.jwt.algorithms.Algorithm
-import com.leg3nd.domain.ports.api.JwtServicePort
+import com.leg3nd.domain.ports.service.JwtServicePort
 import org.koin.core.annotation.Single
 import java.util.*
 import kotlin.time.Duration

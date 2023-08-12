@@ -1,4 +1,4 @@
-package com.leg3nd.domain.ports.api
+package com.leg3nd.domain.ports.service
 
 import com.auth0.jwt.JWTVerifier
 

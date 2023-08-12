@@ -1,8 +1,8 @@
 package com.leg3nd.domain.core.service
 
 import com.leg3nd.domain.core.model.Account
-import com.leg3nd.domain.ports.api.AccountServicePort
 import com.leg3nd.domain.ports.database.AccountDatabasePort
+import com.leg3nd.domain.ports.service.AccountServicePort
 import org.koin.core.annotation.Single
 import org.slf4j.LoggerFactory
 import java.time.OffsetDateTime

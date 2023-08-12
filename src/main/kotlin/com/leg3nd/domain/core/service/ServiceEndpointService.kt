@@ -1,8 +1,8 @@
 package com.leg3nd.domain.core.service
 
 import com.leg3nd.domain.core.model.ServiceEndpoint
-import com.leg3nd.domain.ports.api.ServiceEndpointServicePort
 import com.leg3nd.domain.ports.database.ServiceEndpointDatabasePort
+import com.leg3nd.domain.ports.service.ServiceEndpointServicePort
 import org.koin.core.annotation.Single
 import org.slf4j.LoggerFactory
 import java.time.OffsetDateTime
