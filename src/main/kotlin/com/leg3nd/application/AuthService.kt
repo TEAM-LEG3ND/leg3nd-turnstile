@@ -1,9 +1,9 @@
-package com.leg3nd.domain.ports.api
+package com.leg3nd.application
 
 import com.leg3nd.domain.core.model.Account
 import com.leg3nd.domain.core.model.Token
 
-interface AuthServicePort {
+interface AuthService {
     suspend fun login(oAuthProvider: Account.OAuthProvider, authorizationCode: String): Result<Token>
 
     suspend fun authenticate(accountId: String, serviceType: Account.Service.ServiceType): Result<String?>
