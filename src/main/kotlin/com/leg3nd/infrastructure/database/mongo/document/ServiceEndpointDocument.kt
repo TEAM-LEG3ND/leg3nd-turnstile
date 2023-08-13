@@ -3,6 +3,7 @@ package com.leg3nd.infrastructure.database.mongo.document
 import com.leg3nd.common.util.DateTimeUtil.toEpochMilli
 import com.leg3nd.common.util.DateTimeUtil.toOffsetDateTime
 import com.leg3nd.domain.core.model.ServiceEndpoint
+import com.leg3nd.domain.core.model.ServiceType
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import org.bson.types.ObjectId
@@ -14,7 +15,7 @@ import org.litote.kmongo.newId
 data class ServiceEndpointDocument(
     @Contextual
     val _id: Id<ServiceEndpointDocument> = newId(),
-    val name: String,
+    val serviceType: ServiceType,
     var basePath: String,
     var publicEndpoints: List<String>,
     var draftEndpoints: List<String>,
@@ -24,7 +25,7 @@ data class ServiceEndpointDocument(
     companion object {
         fun fromDomain(domain: ServiceEndpoint) = ServiceEndpointDocument(
             _id = domain.id?.toObjectId() ?: newId(),
-            name = domain.name,
+            serviceType = domain.serviceType,
             basePath = domain.basePath,
             publicEndpoints = domain.publicEndpoints,
             draftEndpoints = domain.draftEndpoints,
@@ -35,7 +36,7 @@ data class ServiceEndpointDocument(
 
     fun toDomain() = ServiceEndpoint(
         id = this._id.toString(),
-        name = this.name,
+        serviceType = this.serviceType,
         basePath = this.basePath,
         publicEndpoints = this.publicEndpoints,
         draftEndpoints = this.draftEndpoints,

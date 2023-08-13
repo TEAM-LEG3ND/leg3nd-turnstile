@@ -1,6 +1,7 @@
 package com.leg3nd.api.dto
 
 import com.leg3nd.domain.core.model.ServiceEndpoint
+import com.leg3nd.domain.core.model.ServiceType
 import io.swagger.v3.oas.annotations.media.Schema
 import kotlinx.serialization.Serializable
 import java.time.format.DateTimeFormatter
@@ -10,8 +11,8 @@ import java.time.format.DateTimeFormatter
 data class ServiceEndpointResponse(
     @field:Schema(name = "id")
     val id: String?,
-    @field:Schema(name = "name")
-    val name: String,
+    @field:Schema(name = "type")
+    val type: ServiceType,
     @field:Schema(name = "base_path")
     val basePath: String,
     @field:Schema(name = "public_endpoints")
@@ -26,7 +27,7 @@ data class ServiceEndpointResponse(
     companion object {
         fun fromDomain(domain: ServiceEndpoint) = ServiceEndpointResponse(
             id = domain.id,
-            name = domain.name,
+            type = domain.serviceType,
             basePath = domain.basePath,
             publicEndpoints = domain.publicEndpoints,
             draftEndpoints = domain.draftEndpoints,

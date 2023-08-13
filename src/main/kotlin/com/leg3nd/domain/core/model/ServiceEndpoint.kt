@@ -4,7 +4,7 @@ import java.time.OffsetDateTime
 
 data class ServiceEndpoint(
     val id: String? = null,
-    val name: String,
+    val serviceType: ServiceType,
     var basePath: String,
     var publicEndpoints: List<String>,
     var draftEndpoints: List<String>,

@@ -12,7 +12,7 @@ class ServiceEndpointController(
 
     suspend fun upsert(upsertServiceEndpointRequest: UpsertServiceEndpointRequest): ServiceEndpointResponse {
         val upsertServiceEndpoint = serviceEndpointServicePort.upsert(
-            upsertServiceEndpointRequest.name,
+            upsertServiceEndpointRequest.type,
             upsertServiceEndpointRequest.basePath,
             upsertServiceEndpointRequest.publicEndpoints,
             upsertServiceEndpointRequest.draftEndpoints,

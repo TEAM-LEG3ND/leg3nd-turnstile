@@ -1,6 +1,7 @@
 package com.leg3nd.infrastructure.database.mongo
 
 import com.leg3nd.domain.core.model.ServiceEndpoint
+import com.leg3nd.domain.core.model.ServiceType
 import com.leg3nd.domain.ports.database.ServiceEndpointDatabasePort
 import com.leg3nd.infrastructure.database.mongo.document.ServiceEndpointDocument
 import org.koin.core.annotation.Single
@@ -20,7 +21,7 @@ class MongoServiceEndpointDatabaseAdapter(
         serviceEndpoint
     }
 
-    override suspend fun findByName(name: String): Result<ServiceEndpoint?> = runCatching {
-        serviceEndpointCollection.findOne(ServiceEndpointDocument::name eq name)?.toDomain()
+    override suspend fun findByServiceType(serviceType: ServiceType): Result<ServiceEndpoint?> = runCatching {
+        serviceEndpointCollection.findOne(ServiceEndpointDocument::serviceType eq serviceType)?.toDomain()
     }
 }
