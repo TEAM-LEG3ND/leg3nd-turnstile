@@ -4,6 +4,7 @@ import com.leg3nd.api.dto.AuthResponse
 import com.leg3nd.api.dto.OAuthLoginRequest
 import com.leg3nd.api.dto.TokenPairDto
 import com.leg3nd.domain.core.model.Account
+import com.leg3nd.domain.core.model.ServiceType
 import com.leg3nd.domain.ports.service.AuthServicePort
 import org.koin.core.annotation.Single
 import org.slf4j.LoggerFactory
@@ -21,13 +22,13 @@ class AuthController(
         return TokenPairDto.fromDomain(token)
     }
 
-    suspend fun authenticate(accountId: String, serviceType: Account.Service.ServiceType): AuthResponse {
-        val authenticatedAccountId = authService.authenticate(accountId, serviceType).getOrThrow()
+    suspend fun authenticate(accessToken: String?, serviceType: ServiceType, endpoint: String): AuthResponse {
+        val authenticatedAccountId = authService.authenticate(accessToken, serviceType, endpoint).getOrThrow()
         return AuthResponse(authenticatedAccountId)
     }
 
-    fun refresh(accountId: String): TokenPairDto {
-        val token = authService.refreshToken(accountId)
+    fun refresh(refreshToken: String): TokenPairDto {
+        val token = authService.refreshToken(refreshToken).getOrThrow()
         return TokenPairDto.fromDomain(token)
     }
 }
