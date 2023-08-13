@@ -3,6 +3,7 @@ package com.leg3nd.infrastructure.database.mongo.document
 import com.leg3nd.common.util.DateTimeUtil.toEpochMilli
 import com.leg3nd.common.util.DateTimeUtil.toOffsetDateTime
 import com.leg3nd.domain.core.model.Account
+import com.leg3nd.domain.core.model.ServiceType
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import org.bson.types.ObjectId
@@ -32,7 +33,7 @@ data class AccountDocument(
         companion object {
             fun fromDomain(serviceDomain: Account.Service): Service =
                 Service(
-                    type = ServiceType.fromDomain(serviceDomain.type),
+                    type = serviceDomain.type,
                     status = Status.fromDomain(serviceDomain.status),
                     createdAt = serviceDomain.createdAt.toEpochMilli(),
                     updatedAt = serviceDomain.updatedAt.toEpochMilli(),
@@ -41,28 +42,11 @@ data class AccountDocument(
 
         fun toDomain(): Account.Service =
             Account.Service(
-                type = this.type.toDomain(),
+                type = this.type,
                 status = this.status.toDomain(),
                 createdAt = this.createdAt.toOffsetDateTime(),
                 updatedAt = this.updatedAt.toOffsetDateTime(),
             )
-
-        enum class ServiceType {
-            STUDIUM, BREAD_N
-            ;
-
-            companion object {
-                fun fromDomain(serviceTypeDomain: Account.Service.ServiceType): ServiceType = when (serviceTypeDomain) {
-                    Account.Service.ServiceType.STUDIUM -> STUDIUM
-                    Account.Service.ServiceType.BREAD_N -> BREAD_N
-                }
-            }
-
-            fun toDomain(): Account.Service.ServiceType = when (this) {
-                STUDIUM -> Account.Service.ServiceType.STUDIUM
-                BREAD_N -> Account.Service.ServiceType.BREAD_N
-            }
-        }
     }
 
     enum class OAuthProvider {

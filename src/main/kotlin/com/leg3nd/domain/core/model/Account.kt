@@ -17,12 +17,7 @@ data class Account(
         var status: Status,
         val createdAt: OffsetDateTime = OffsetDateTime.now(),
         var updatedAt: OffsetDateTime = OffsetDateTime.now(),
-    ) {
-
-        enum class ServiceType {
-            STUDIUM, BREAD_N
-        }
-    }
+    )
 
     enum class OAuthProvider {
         GOOGLE, GITHUB
