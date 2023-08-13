@@ -1,6 +1,7 @@
 package com.leg3nd.domain.core.service
 
 import com.leg3nd.domain.core.model.Account
+import com.leg3nd.domain.core.model.ServiceEndpoint
 import com.leg3nd.domain.core.model.ServiceType
 import com.leg3nd.domain.core.model.Token
 import com.leg3nd.domain.ports.service.AccountServicePort
@@ -80,12 +81,9 @@ class AuthService(
     }
 
     private suspend fun authenticateIfTokenNotProvided(serviceType: ServiceType, endpoint: String) {
-        val serviceEndpoint = serviceEndpointServicePort.findByServiceType(serviceType).getOrElse {
-            log.error("error occurred findByServiceType", it)
-            throw it
-        } ?: throw Exception("serviceEndpoint not found")
+        val (serviceEndpoint, routePath) = getServiceEndpointAndRoutePath(serviceType, endpoint)
 
-        if (!serviceEndpoint.publicEndpoints.contains(endpoint)) {
+        if (!serviceEndpoint.publicEndpoints.contains(routePath)) {
             throw Exception("endpoint $endpoint is not public")
         }
     }
@@ -100,12 +98,13 @@ class AuthService(
         val backendService = accountById.services.find { it.type == serviceType }
 
         if (backendService == null) {
-            val serviceEndpoint = serviceEndpointServicePort.findByServiceType(serviceType).getOrElse {
-                log.error("error occurred findByServiceType", it)
-                throw it
-            } ?: throw Exception("serviceEndpoint not found")
+            val (serviceEndpoint, routePath) = getServiceEndpointAndRoutePath(serviceType, endpoint)
 
-            if (!(serviceEndpoint.publicEndpoints.contains(endpoint) && serviceEndpoint.draftEndpoints.contains(endpoint))) {
+            if (!(
+                    serviceEndpoint.publicEndpoints.contains(routePath) &&
+                        serviceEndpoint.draftEndpoints.contains(routePath)
+                    )
+            ) {
                 throw Exception("endpoint $endpoint is not public")
             }
         } else {
@@ -113,5 +112,22 @@ class AuthService(
                 throw Exception("status is not OK for $serviceType")
             }
         }
+    }
+
+    private suspend fun getServiceEndpointAndRoutePath(
+        serviceType: ServiceType,
+        endpoint: String,
+    ): Pair<ServiceEndpoint, String> {
+        val serviceEndpoint = serviceEndpointServicePort.findByServiceType(serviceType).getOrElse {
+            log.error("error occurred findByServiceType", it)
+            throw it
+        } ?: throw Exception("serviceEndpoint not found")
+
+        val routePath = if (endpoint.startsWith(serviceEndpoint.basePath)) {
+            endpoint.removePrefix(serviceEndpoint.basePath)
+        } else {
+            throw Exception("endpoint $endpoint does not contain base path ${serviceEndpoint.basePath}")
+        }
+        return Pair(serviceEndpoint, routePath)
     }
 }
