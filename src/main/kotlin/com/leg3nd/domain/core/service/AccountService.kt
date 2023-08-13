@@ -34,7 +34,7 @@ class AccountService(
 
         val service = Account.Service(
             type = serviceType,
-            status = Account.Status.DRAFT,
+            status = Account.Status.OK,
             createdAt = OffsetDateTime.now(),
             updatedAt = OffsetDateTime.now(),
         )
