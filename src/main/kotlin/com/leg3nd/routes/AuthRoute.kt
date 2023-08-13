@@ -79,11 +79,16 @@ fun Routing.authRoute() {
         {
             tags = listOf("Gateway Auth")
             securitySchemeName = "auth-jwt"
+            protected = true
         },
     ) {
         get(
             {
                 description = "Gateway Auth API"
+                request {
+                    headerParameter<String>("x-service-type")
+                    headerParameter<String>("x-endpoint")
+                }
             },
         ) {
             val serviceType = runCatching {
