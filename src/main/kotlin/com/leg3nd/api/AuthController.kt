@@ -6,6 +6,7 @@ import com.leg3nd.api.dto.TokenPairDto
 import com.leg3nd.domain.core.model.Account
 import com.leg3nd.domain.core.model.ServiceType
 import com.leg3nd.domain.ports.service.AuthServicePort
+import io.ktor.server.plugins.*
 import org.koin.core.annotation.Single
 import org.slf4j.LoggerFactory
 
@@ -17,13 +18,16 @@ class AuthController(
     suspend fun login(oAuthProvider: Account.OAuthProvider, oAuthLoginRequest: OAuthLoginRequest): TokenPairDto {
         val token = authService.login(oAuthProvider, oAuthLoginRequest.code).getOrElse {
             log.error("login failed", it)
-            throw Exception("login failed")
+            throw BadRequestException("login failed")
         }
         return TokenPairDto.fromDomain(token)
     }
 
     suspend fun authenticate(accessToken: String?, serviceType: ServiceType, endpoint: String): AuthResponse {
-        val authenticatedAccountId = authService.authenticate(accessToken, serviceType, endpoint).getOrThrow()
+        val authenticatedAccountId = authService.authenticate(accessToken, serviceType, endpoint).getOrElse {
+            log.error("authenticate error occurred", it)
+            throw BadRequestException("authenticate error occurred", it)
+        }
         return AuthResponse(authenticatedAccountId)
     }
 
