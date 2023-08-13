@@ -1,16 +1,26 @@
 package com.leg3nd.domain.core.service
 
 import com.leg3nd.domain.core.model.Account
+import com.leg3nd.domain.core.model.ServiceType
 import com.leg3nd.domain.core.model.Token
-import com.leg3nd.domain.ports.api.AuthServicePort
+import com.leg3nd.domain.ports.service.AccountServicePort
+import com.leg3nd.domain.ports.service.AuthServicePort
+import com.leg3nd.domain.ports.service.OAuthServicePort
+import com.leg3nd.domain.ports.service.ServiceEndpointServicePort
+import com.leg3nd.domain.ports.token.TokenManagerPort
+import com.leg3nd.domain.ports.token.dto.TokenClaims
 import org.koin.core.annotation.Single
+import org.slf4j.LoggerFactory
 
 @Single
 class AuthService(
-    private val accountService: AccountService,
-    private val jwtService: JwtService,
-    private val oAuthService: OAuthService,
+    private val accountService: AccountServicePort,
+    private val tokenManager: TokenManagerPort,
+    private val oAuthService: OAuthServicePort,
+    private val serviceEndpointServicePort: ServiceEndpointServicePort,
 ) : AuthServicePort {
+    private val log = LoggerFactory.getLogger(this::class.java)
+
     override suspend fun login(oAuthProvider: Account.OAuthProvider, authorizationCode: String): Result<Token> =
         runCatching {
             val oAuthUser = oAuthService.loginWithOAuth(oAuthProvider, authorizationCode)
@@ -28,35 +38,80 @@ class AuthService(
                 accountByEmail.id ?: throw Exception("No id found in account with email ${accountByEmail.email}")
             }
 
-            val jwtToken = jwtService.generateToken(accountId)
-            val refreshToken = jwtService.generateRefreshToken(accountId)
+            val accessToken = tokenManager.generateAccessToken(accountId)
+            val refreshToken = tokenManager.generateRefreshToken(accountId)
 
-            Token(jwtToken, refreshToken)
+            Token(accessToken, refreshToken)
         }
 
-    override suspend fun authenticate(accountId: String, serviceType: Account.Service.ServiceType): Result<String?> =
+    override suspend fun authenticate(
+        accessToken: String?,
+        serviceType: ServiceType,
+        endpoint: String,
+    ): Result<String?> =
         runCatching {
-            val accountById = accountService.findAccountById(accountId)
-
-            val targetService = accountById.services.find { it.type == serviceType }
-
-            if (targetService?.status != Account.Status.OK) {
-                // check if service url is public
-                val public = true
-                if (public) {
-                    null
-                } else {
-                    throw Exception("Authentication Filed")
-                }
+            if (accessToken == null) {
+                authenticateIfTokenNotProvided(serviceType, endpoint)
+                null
             } else {
-                accountById.id
+                val claims = tokenManager.validateAccessToken(accessToken).getOrElse {
+                    log.error("error occurred when validate access token", it)
+                    throw it
+                }
+
+                authenticateIfTokenProvided(claims, serviceType, endpoint)
+
+                claims.sub
             }
         }
 
-    override fun refreshToken(accountId: String): Token {
-        val jwtToken = jwtService.generateToken(accountId)
-        val refreshToken = jwtService.generateRefreshToken(accountId)
+    override fun refreshToken(refreshToken: String): Result<Token> = runCatching {
+        val claims = tokenManager.validateRefreshToken(refreshToken).getOrElse {
+            log.error("error occurred when validate access token", it)
+            throw it
+        }
 
-        return Token(jwtToken, refreshToken)
+        val accountId = claims.sub
+
+        val generatedAccessToken = tokenManager.generateAccessToken(accountId)
+        val generatedRefreshToken = tokenManager.generateRefreshToken(accountId)
+
+        Token(generatedAccessToken, generatedRefreshToken)
+    }
+
+    private suspend fun authenticateIfTokenNotProvided(serviceType: ServiceType, endpoint: String) {
+        val serviceEndpoint = serviceEndpointServicePort.findByServiceType(serviceType).getOrElse {
+            log.error("error occurred findByServiceType", it)
+            throw it
+        } ?: throw Exception("serviceEndpoint not found")
+
+        if (!serviceEndpoint.publicEndpoints.contains(endpoint)) {
+            throw Exception("endpoint $endpoint is not public")
+        }
+    }
+
+    private suspend fun authenticateIfTokenProvided(
+        claims: TokenClaims,
+        serviceType: ServiceType,
+        endpoint: String,
+    ) {
+        val accountById = accountService.findAccountById(claims.sub)
+
+        val backendService = accountById.services.find { it.type == serviceType }
+
+        if (backendService == null) {
+            val serviceEndpoint = serviceEndpointServicePort.findByServiceType(serviceType).getOrElse {
+                log.error("error occurred findByServiceType", it)
+                throw it
+            } ?: throw Exception("serviceEndpoint not found")
+
+            if (!(serviceEndpoint.publicEndpoints.contains(endpoint) && serviceEndpoint.draftEndpoints.contains(endpoint))) {
+                throw Exception("endpoint $endpoint is not public")
+            }
+        } else {
+            if (backendService.status != Account.Status.OK) {
+                throw Exception("status is not OK for $serviceType")
+            }
+        }
     }
 }

@@ -1,8 +1,9 @@
 package com.leg3nd.domain.core.service
 
 import com.leg3nd.domain.core.model.Account
-import com.leg3nd.domain.ports.api.AccountServicePort
+import com.leg3nd.domain.core.model.ServiceType
 import com.leg3nd.domain.ports.database.AccountDatabasePort
+import com.leg3nd.domain.ports.service.AccountServicePort
 import org.koin.core.annotation.Single
 import org.slf4j.LoggerFactory
 import java.time.OffsetDateTime
@@ -19,7 +20,7 @@ class AccountService(
         return createdAccountId
     }
 
-    override suspend fun addService(accountId: String, serviceType: Account.Service.ServiceType) {
+    override suspend fun addService(accountId: String, serviceType: ServiceType) {
         val account = accountDatabasePort.findById(accountId).getOrElse {
             log.error("error occurred when findById", it)
             throw Exception("No such user with account id")
@@ -33,7 +34,7 @@ class AccountService(
 
         val service = Account.Service(
             type = serviceType,
-            status = Account.Status.DRAFT,
+            status = Account.Status.OK,
             createdAt = OffsetDateTime.now(),
             updatedAt = OffsetDateTime.now(),
         )

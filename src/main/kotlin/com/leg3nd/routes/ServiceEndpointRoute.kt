@@ -1,8 +1,8 @@
 package com.leg3nd.routes
 
-import com.leg3nd.application.ServiceEndpointController
-import com.leg3nd.application.dto.ServiceEndpointResponse
-import com.leg3nd.application.dto.UpsertServiceEndpointRequest
+import com.leg3nd.api.ServiceEndpointController
+import com.leg3nd.api.dto.ServiceEndpointResponse
+import com.leg3nd.api.dto.UpsertServiceEndpointRequest
 import io.github.smiley4.ktorswaggerui.dsl.post
 import io.github.smiley4.ktorswaggerui.dsl.route
 import io.ktor.http.*

@@ -1,8 +1,9 @@
 package com.leg3nd.domain.core.service
 
 import com.leg3nd.domain.core.model.ServiceEndpoint
-import com.leg3nd.domain.ports.api.ServiceEndpointServicePort
+import com.leg3nd.domain.core.model.ServiceType
 import com.leg3nd.domain.ports.database.ServiceEndpointDatabasePort
+import com.leg3nd.domain.ports.service.ServiceEndpointServicePort
 import org.koin.core.annotation.Single
 import org.slf4j.LoggerFactory
 import java.time.OffsetDateTime
@@ -14,12 +15,12 @@ class ServiceEndpointService(
     private val log = LoggerFactory.getLogger(this::class.java)
 
     override suspend fun upsert(
-        name: String,
+        serviceType: ServiceType,
         basePath: String,
         publicEndpoints: List<String>,
         draftEndpoints: List<String>,
     ): Result<ServiceEndpoint> = runCatching {
-        val foundServiceEndpoint = serviceEndpointDatabasePort.findByName(name).getOrElse {
+        val foundServiceEndpoint = serviceEndpointDatabasePort.findByServiceType(serviceType).getOrElse {
             log.error("findByName error occurred", it)
             throw it
         }
@@ -27,7 +28,7 @@ class ServiceEndpointService(
         val serviceEndpointToSave = foundServiceEndpoint?.let {
             ServiceEndpoint(
                 id = it.id,
-                name = it.name,
+                serviceType = it.serviceType,
                 basePath = basePath,
                 publicEndpoints = publicEndpoints,
                 draftEndpoints = draftEndpoints,
@@ -35,7 +36,7 @@ class ServiceEndpointService(
                 updatedAt = OffsetDateTime.now(),
             )
         } ?: ServiceEndpoint(
-            name = name,
+            serviceType = serviceType,
             basePath = basePath,
             publicEndpoints = publicEndpoints,
             draftEndpoints = draftEndpoints,
@@ -46,4 +47,9 @@ class ServiceEndpointService(
             throw it
         }
     }
+
+    override suspend fun findByServiceType(serviceType: ServiceType): Result<ServiceEndpoint?> =
+        runCatching {
+            serviceEndpointDatabasePort.findByServiceType(serviceType).getOrThrow()
+        }
 }

@@ -1,4 +1,4 @@
-package com.leg3nd.application.dto
+package com.leg3nd.api.dto
 
 import io.swagger.v3.oas.annotations.media.Schema
 import kotlinx.serialization.Serializable

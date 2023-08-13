@@ -1,4 +1,4 @@
-package com.leg3nd.application.dto
+package com.leg3nd.api.dto
 
 import kotlinx.serialization.Serializable
 
