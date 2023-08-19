@@ -101,7 +101,7 @@ class AuthService(
             val (serviceEndpoint, routePath) = getServiceEndpointAndRoutePath(serviceType, endpoint)
 
             if (!(
-                    serviceEndpoint.publicEndpoints.contains(routePath) &&
+                    serviceEndpoint.publicEndpoints.contains(routePath) ||
                         serviceEndpoint.draftEndpoints.contains(routePath)
                     )
             ) {
@@ -128,6 +128,9 @@ class AuthService(
         } else {
             throw Exception("endpoint $endpoint does not contain base path ${serviceEndpoint.basePath}")
         }
+
+        println("pair: $serviceEndpoint, $routePath")
+
         return Pair(serviceEndpoint, routePath)
     }
 }
