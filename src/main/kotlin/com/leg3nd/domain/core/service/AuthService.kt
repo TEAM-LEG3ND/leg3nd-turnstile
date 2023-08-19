@@ -129,8 +129,6 @@ class AuthService(
             throw Exception("endpoint $endpoint does not contain base path ${serviceEndpoint.basePath}")
         }
 
-        println("pair: $serviceEndpoint, $routePath")
-
         return Pair(serviceEndpoint, routePath)
     }
 }
