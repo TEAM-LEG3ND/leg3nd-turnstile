@@ -83,17 +83,18 @@ fun Routing.authRoute() {
         },
     ) {
         get(
+            "/{serviceType}",
             {
                 description = "Gateway Auth API"
                 request {
-                    headerParameter<String>("x-service-type")
+                    pathParameter<ServiceType>("serviceType")
                     headerParameter<String>("x-endpoint")
                 }
             },
         ) {
             val serviceType = runCatching {
                 val serviceTypeString =
-                    call.request.headers["x-service-type"] ?: throw Exception("x-service-type not provided")
+                    call.parameters["serviceType"] ?: throw Exception("x-service-type not provided")
                 ServiceType.valueOf(serviceTypeString)
             }.getOrElse {
                 throw BadRequestException("x-service-type parsing failed", it)
