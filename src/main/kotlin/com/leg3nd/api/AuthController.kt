@@ -24,6 +24,7 @@ class AuthController(
     }
 
     suspend fun authenticate(accessToken: String?, serviceType: ServiceType, endpoint: String): AuthResponse {
+        log.info("accessToken is $accessToken, serviceType is $serviceType, endpoint is $endpoint")
         val authenticatedAccountId = authService.authenticate(accessToken, serviceType, endpoint).getOrElse {
             log.error("authenticate error occurred", it)
             throw BadRequestException("authenticate error occurred", it)
