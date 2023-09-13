@@ -14,5 +14,5 @@
       become: True
       shell: /usr/bin/docker service update --force turnstile_turnstile
       args:
-        chdir: /hoe/{{ user }}/compose
+        chdir: /home/{{ user }}/compose
         executable: /bin/zsh
