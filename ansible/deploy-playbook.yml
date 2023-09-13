@@ -6,13 +6,11 @@
   tasks:
     - name: Log into private registry and force re-authorization
       become: True
-      shell: "/usr/bin/docker login {{ registry_host }} -u {{ registry_user }} -p {{ registry_password }}"
+      shell: "/bin/docker login {{ registry_host }} -u {{ registry_user }} -p {{ registry_password }}"
       args:
-        chdir: "/home"
-        executable: "/usr/bin/zsh"
+        executable: "/bin/zsh"
     - name: Restart Container
       become: True
-      shell: "/usr/bin/docker service update --force --image {{ registry_host }}/leg3nd-turnstile:latest turnstile_turnstile"
+      shell: "/bin/docker service update --force --image {{ registry_host }}/leg3nd-turnstile:latest turnstile_turnstile"
       args:
-        chdir: "/home/{{ user }}/compose"
-        executable: "/usr/bin/zsh"
+        executable: "/bin/zsh"
