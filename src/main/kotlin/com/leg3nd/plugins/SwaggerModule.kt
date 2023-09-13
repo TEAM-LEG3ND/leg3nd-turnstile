@@ -27,5 +27,9 @@ fun Application.configureSwagger() {
             scheme = AuthScheme.BEARER
             bearerFormat = "jwt"
         }
+        info {
+            title = "Turnstile API Swagger"
+            description = "LEG3ND 계정 / 인증 서버 Turnstile Swagger 문서"
+        }
     }
 }
