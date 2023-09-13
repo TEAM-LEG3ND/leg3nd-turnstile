@@ -24,6 +24,7 @@ jobs:
           export REGISTRY_PASSWORD=${{ secrets.REGISTRY_PASSWORD }}
           ./gradlew publishImage
   docker-swarm-deploy:
+    environment: dev
     runs-on: ubuntu-latest
     steps:
       - name: Deploy
@@ -33,6 +34,7 @@ jobs:
           username: ${{ secrets.REGISTRY_ID }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
           remote_host: ${{ secrets.REMOTE_HOST }}
+          remote_port: ${{ secrets.SSH_PORT }}
           remote_user: ${{ secrets.ANSIBLE_USER }}
           remote_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
           stack_file: "/home/limdongyoung0/compose/turnstile.yml"
