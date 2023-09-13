@@ -14,7 +14,6 @@ fun Application.configureSwagger() {
 
     install(SwaggerUI) {
         swagger {
-            rootHostPath = "/turnstile"
             forwardRoot = false
             swaggerUrl = "swagger-ui"
             onlineSpecValidator()
@@ -27,14 +26,6 @@ fun Application.configureSwagger() {
             type = AuthType.HTTP
             scheme = AuthScheme.BEARER
             bearerFormat = "jwt"
-        }
-        server {
-            url = "https://api.server.d0lim.com/turnstile/"
-            description = "Dev(mac mini)"
-        }
-        server {
-            url = "http://localhost:8080"
-            description = "Local"
         }
     }
 }
