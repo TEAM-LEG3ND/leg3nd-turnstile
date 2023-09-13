@@ -8,9 +8,11 @@
       become: True
       shell: "/usr/bin/docker login {{ registry_host }} -u {{ registry_user }} -p {{ registry_password }}"
       args:
-        executable: "/bin/zsh"
+        chdir: "/home/{{ user }}/compose"
+        executable: /usr/bin/zsh
     - name: Restart Container
       become: True
       shell: "/usr/bin/docker service update --force --image {{ registry_host }}/leg3nd-turnstile:latest turnstile_turnstile"
       args:
-        executable: "/bin/zsh"
+        chdir: "/home/{{ user }}/compose"
+        executable: "/usr/bin/zsh"
