@@ -12,7 +12,7 @@
         reauthorize: yes
     - name: Restart Container
       become: True
-      shell: /usr/local/bin/docker service update --force turnstile_turnstile
+      shell: /usr/bin/docker service update --force turnstile_turnstile
       args:
         chdir: /hoe/{{ user }}/compose
         executable: /bin/zsh
