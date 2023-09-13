@@ -8,7 +8,7 @@
       become: True
       shell: "/usr/bin/docker login {{ registry_host }} -u {{ registry_user }} -p {{ registry_password }}"
       args:
-        chdir: "/home/{{ user }}/compose"
+        chdir: "/home"
         executable: "/usr/bin/zsh"
     - name: Restart Container
       become: True
