@@ -12,7 +12,7 @@
         executable: /usr/bin/zsh
     - name: Restart Container
       become: True
-      shell: "/usr/bin/docker stack deploy -c turnstile.yml turnstile"
+      shell: "/usr/bin/zsh node-env.sh && /usr/bin/docker stack deploy -c turnstile.yml turnstile"
       args:
         chdir: "/home/{{ user }}/compose"
         executable: "/usr/bin/zsh"
