@@ -5,6 +5,7 @@
   become_user: "{{ user }}"
   tasks:
     - name: Log into private registry and force re-authorization
+      become: True
       docker_login:
         registry: "{{ registry_host }}"
         username: "{{ registry_user }}"
