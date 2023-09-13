@@ -6,11 +6,10 @@
   tasks:
     - name: Log into private registry and force re-authorization
       become: True
-      docker_login:
-        registry: "{{ registry_host }}"
-        username: "{{ registry_user }}"
-        password: "{{ registry_password }}"
-        reauthorize: yes
+      shell: /usr/bin/docker login {{ registry_host }} -u {{ registry_user }} -p {{ registry_password }}
+      args:
+        chdir: /home/{{ user }}/compose
+        executable: /bin/zsh
     - name: Restart Container
       become: True
       shell: /usr/bin/docker service update --force turnstile_turnstile
