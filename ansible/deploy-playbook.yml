@@ -12,7 +12,7 @@
         executable: /usr/bin/zsh
     - name: Restart Container
       become: True
-      shell: "/usr/bin/docker service update --force --image {{ registry_host }}/leg3nd-turnstile:latest turnstile_turnstile"
+      shell: "/usr/bin/docker stack deploy -c turnstile.yml turnstile"
       args:
         chdir: "/home/{{ user }}/compose"
         executable: "/usr/bin/zsh"
