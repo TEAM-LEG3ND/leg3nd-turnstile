@@ -5,14 +5,14 @@
   become_user: "{{ user }}"
   tasks:
     - name: Log into private registry and force re-authorization
-      become: True
+      become: true
       shell: /usr/bin/docker login {{ registry_host }} -u {{ registry_user }} -p {{ registry_password }}
       args:
         chdir: /home/{{ user }}/compose
-        executable: /bin/zsh
+        executable: /usr/bin/zsh
     - name: Restart Container
-      become: True
-      shell: /usr/bin/docker service update --force turnstile_turnstile
+      become: true
+      shell: /usr/bin/docker service update --force --image {{ registry_host }}/leg3nd-turnstile:latest turnstile_turnstile
       args:
         chdir: /home/{{ user }}/compose
-        executable: /bin/zsh
+        executable: /usr/bin/zsh
