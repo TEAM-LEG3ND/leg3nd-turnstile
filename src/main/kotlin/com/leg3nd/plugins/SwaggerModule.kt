@@ -29,7 +29,7 @@ fun Application.configureSwagger() {
         }
         info {
             title = "Turnstile API Swagger"
-            description = "LEG3ND 계정 / 인증 서버 Turnstile Swagger 문서"
+            description = "LEG3ND 통합 계정 / 인증 서버 Turnstile Swagger 문서"
         }
     }
 }
