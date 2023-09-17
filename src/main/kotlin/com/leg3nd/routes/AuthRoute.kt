@@ -93,18 +93,19 @@ fun Routing.authRoute() {
                 description = "Gateway Auth API"
                 request {
                     pathParameter<ServiceType>("serviceType")
-                    headerParameter<String>("x-endpoint")
+                    headerParameter<String>("X-Forwarded-Uri")
                 }
             },
         ) {
             val serviceType = runCatching {
                 val serviceTypeString =
-                    call.parameters["serviceType"] ?: throw Exception("x-service-type not provided")
+                    call.parameters["serviceType"] ?: throw Exception("serviceType not provided")
                 ServiceType.valueOf(serviceTypeString)
             }.getOrElse {
-                throw BadRequestException("x-service-type parsing failed", it)
+                throw BadRequestException("serviceType parsing failed", it)
             }
-            val endpoint = call.request.headers["x-endpoint"] ?: throw BadRequestException("x-endpoint not provided")
+            val endpoint =
+                call.request.headers["X-Forwarded-Uri"] ?: throw BadRequestException("X-Forwarded-Uri not provided")
             val accessToken = call.request.parseAuthorizationHeader()?.let {
                 val authHeader = it.toString()
                 if (authHeader.startsWith("Bearer ")) {

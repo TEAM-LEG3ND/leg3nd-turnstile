@@ -123,12 +123,6 @@ class AuthService(
             throw it
         } ?: throw Exception("serviceEndpoint not found")
 
-        val routePath = if (endpoint.startsWith(serviceEndpoint.basePath)) {
-            endpoint.removePrefix(serviceEndpoint.basePath)
-        } else {
-            throw Exception("endpoint $endpoint does not contain base path ${serviceEndpoint.basePath}")
-        }
-
-        return Pair(serviceEndpoint, routePath)
+        return Pair(serviceEndpoint, endpoint)
     }
 }
