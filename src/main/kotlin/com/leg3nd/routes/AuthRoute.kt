@@ -82,6 +82,11 @@ fun Routing.authRoute() {
             protected = true
         },
     ) {
+        get() {
+            call.response.headers.append("x-account-id", "userId")
+            call.respond(HttpStatusCode.OK)
+        }
+
         get(
             "/{serviceType}",
             {
