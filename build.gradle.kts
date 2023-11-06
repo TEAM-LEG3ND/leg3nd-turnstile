@@ -109,7 +109,7 @@ jib {
 
 ktor {
     docker {
-        localImageName.set("leg3nd-turnstile")
+        localImageName.set("leg3nd-turnstile-dev-local")
         imageTag.set("latest")
         jreVersion.set(io.ktor.plugin.features.JreVersion.JRE_17)
         externalRegistry.set(
