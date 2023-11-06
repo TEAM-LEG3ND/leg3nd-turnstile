@@ -8,9 +8,11 @@ import kotlinx.serialization.Serializable
 data class TokenResponse(
     @field:Schema(name = "access_token")
     val accessToken: String,
+    @field:Schema(name = "status")
+    val status: String,
 ) {
     companion object {
         fun fromTokenPair(tokenPair: TokenPairDto) =
-            TokenResponse(accessToken = tokenPair.accessToken)
+            TokenResponse(accessToken = tokenPair.accessToken, status = tokenPair.status)
     }
 }
