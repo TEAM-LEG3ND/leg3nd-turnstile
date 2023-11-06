@@ -117,7 +117,7 @@ ktor {
                 hostname = providers.environmentVariable("REGISTRY_HOST"),
                 username = providers.environmentVariable("REGISTRY_ID"),
                 password = providers.environmentVariable("REGISTRY_PASSWORD"),
-                project = provider { "leg3nd-turnstile" },
+                project = provider { "leg3nd-turnstile-dev-local" },
             ),
         )
     }
