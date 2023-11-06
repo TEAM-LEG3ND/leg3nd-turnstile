@@ -1,7 +1,9 @@
 name: ci-dev-local
 
 on: 
-  deployment
+  # push:
+  #   branches:
+  #     - 'dev-local'
 
 jobs:
   docker-build-and-push:
