@@ -1,6 +1,7 @@
 package com.leg3nd.domain.core.service
 
 import com.leg3nd.domain.core.model.Account
+import com.leg3nd.domain.core.model.AccountAuthInfo
 import com.leg3nd.domain.core.model.ServiceEndpoint
 import com.leg3nd.domain.core.model.ServiceType
 import com.leg3nd.domain.core.model.Token
@@ -22,7 +23,10 @@ class AuthService(
 ) : AuthServicePort {
     private val log = LoggerFactory.getLogger(this::class.java)
 
-    override suspend fun login(oAuthProvider: Account.OAuthProvider, authorizationCode: String): Result<Token> =
+    override suspend fun login(
+        oAuthProvider: Account.OAuthProvider,
+        authorizationCode: String,
+    ): Result<AccountAuthInfo> =
         runCatching {
             val oAuthUser = oAuthService.loginWithOAuth(oAuthProvider, authorizationCode)
 
@@ -42,7 +46,10 @@ class AuthService(
             val accessToken = tokenManager.generateAccessToken(accountId)
             val refreshToken = tokenManager.generateRefreshToken(accountId)
 
-            Token(accessToken, refreshToken)
+            val token = Token(accessToken, refreshToken)
+            val status = accountByEmail?.status ?: Account.Status.DRAFT
+
+            AccountAuthInfo(token, status)
         }
 
     override suspend fun authenticate(
@@ -66,7 +73,7 @@ class AuthService(
             }
         }
 
-    override fun refreshToken(refreshToken: String): Result<Token> = runCatching {
+    override fun refreshToken(refreshToken: String): Result<AccountAuthInfo> = runCatching {
         val claims = tokenManager.validateRefreshToken(refreshToken).getOrElse {
             log.error("error occurred when validate access token", it)
             throw it
@@ -77,7 +84,11 @@ class AuthService(
         val generatedAccessToken = tokenManager.generateAccessToken(accountId)
         val generatedRefreshToken = tokenManager.generateRefreshToken(accountId)
 
-        Token(generatedAccessToken, generatedRefreshToken)
+        // TODO: add more validation like current account status validation
+
+        val token = Token(generatedAccessToken, generatedRefreshToken)
+
+        AccountAuthInfo(token, Account.Status.OK)
     }
 
     private suspend fun authenticateIfTokenNotProvided(serviceType: ServiceType, endpoint: String) {
