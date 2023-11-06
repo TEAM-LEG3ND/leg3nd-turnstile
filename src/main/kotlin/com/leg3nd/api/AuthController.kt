@@ -16,11 +16,11 @@ class AuthController(
 ) {
     private val log = LoggerFactory.getLogger(this::class.java)
     suspend fun login(oAuthProvider: Account.OAuthProvider, oAuthLoginRequest: OAuthLoginRequest): TokenPairDto {
-        val token = authService.login(oAuthProvider, oAuthLoginRequest.code).getOrElse {
+        val accountAuthInfo = authService.login(oAuthProvider, oAuthLoginRequest.code).getOrElse {
             log.error("login failed", it)
             throw BadRequestException("login failed")
         }
-        return TokenPairDto.fromDomain(token)
+        return TokenPairDto.fromAccountAuthInfo(accountAuthInfo)
     }
 
     suspend fun authenticate(accessToken: String?, serviceType: ServiceType, endpoint: String): AuthResponse {
@@ -33,7 +33,7 @@ class AuthController(
     }
 
     fun refresh(refreshToken: String): TokenPairDto {
-        val token = authService.refreshToken(refreshToken).getOrThrow()
-        return TokenPairDto.fromDomain(token)
+        val accountAuthInfo = authService.refreshToken(refreshToken).getOrThrow()
+        return TokenPairDto.fromAccountAuthInfo(accountAuthInfo)
     }
 }
