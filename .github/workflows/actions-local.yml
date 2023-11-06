@@ -13,7 +13,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
         with:
-          ref: 'local-dev'
+          ref: 'dev-local'
       - name: create application.yaml and koin.properties
         run: |
           touch ./src/main/resources/application.yaml
